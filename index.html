@@ -16,7 +16,7 @@
 
 body{
  margin:0;
- font-family:Segoe UI;
+ font-family:Segoe UI, sans-serif;
  background:var(--bg);
  color:var(--text);
 }
@@ -29,9 +29,16 @@ header{
  border-bottom:1px solid #334155;
 }
 
-.logo{color:var(--accent);font-weight:bold;}
+.logo{
+ color:var(--accent);
+ font-weight:bold;
+}
 
-.container{padding:20px;max-width:1200px;margin:auto;}
+.container{
+ padding:20px;
+ max-width:1200px;
+ margin:auto;
+}
 
 .grid{
  display:grid;
@@ -89,7 +96,11 @@ header{
  font-size:22px;
 }
 
-.label{color:var(--accent);margin-top:10px;}
+.label{
+ color:var(--accent);
+ margin-top:10px;
+ font-size:13px;
+}
 
 .box{
  background:#1e293b;
@@ -141,31 +152,64 @@ header{
 
 <script>
 
-// CLEAN DATA (SAFE)
+// SAFE DATA (NO ERRORS)
 const data = [
-{p:"WEB",n:"XSS",s:"High",t:"Burp Suite",sum:"JavaScript injection in browser.",steps:"Inject <script>",e:"<script>alert(1)</script>",imp:"Account Hijack"},
-
-{p:"WEB",n:"LFI",s:"High",t:"Browser",sum:"Read files using ../ traversal.",steps:"Access sensitive files",e:"../../etc/passwd",imp:"Information Disclosure"},
-
-{p:"WEB",n:"Command Injection",s:"Critical",t:"Burp Suite",sum:"Execute OS commands.",steps:"Use ; or |",e:"; id",imp:"System Compromise"},
-
-{p:"WEB",n:"WebDAV Upload",s:"High",t:"Cadaver",sum:"Upload malicious file.",steps:"Upload shell",e:"cadaver [URL]",imp:"Webshell Access"}
+{
+ p:"WEB",
+ n:"XSS",
+ s:"High",
+ t:"Burp Suite",
+ sum:"JavaScript injection in browser",
+ steps:"Inject <script> payload",
+ e:"<script>alert(1)</script>",
+ imp:"Cookie Theft"
+},
+{
+ p:"WEB",
+ n:"LFI",
+ s:"High",
+ t:"Browser",
+ sum:"File read via traversal",
+ steps:"Use ../",
+ e:"../../etc/passwd",
+ imp:"Info Leak"
+},
+{
+ p:"WEB",
+ n:"Command Injection",
+ s:"Critical",
+ t:"Burp",
+ sum:"OS execution",
+ steps:"Use ;",
+ e:"; id",
+ imp:"System Control"
+},
+{
+ p:"WEB",
+ n:"WebDAV Upload",
+ s:"High",
+ t:"Cadaver",
+ sum:"Upload malicious file",
+ steps:"Upload shell",
+ e:"cadaver [URL]",
+ imp:"Webshell Access"
+}
 ];
 
-// RENDER
+// RENDER CARDS
 const grid = document.getElementById("grid");
 
 data.forEach((item,i)=>{
- let card = document.createElement("div");
- card.className="card";
+ const card = document.createElement("div");
+ card.className = "card";
 
  card.innerHTML = `
-   <span class="badge">${item.s}</span>
-   <small>PORT ${item.p}</small>
-   <h3>${item.n}</h3>
+  <span class="badge">${item.s}</span>
+  <small>PORT ${item.p}</small>
+  <h3>${item.n}</h3>
  `;
 
- card.onclick=()=>{
+ card.onclick = ()=>{
   document.getElementById("report").innerHTML = `
    <h2>${item.n}</h2>
    <p>ID: DRAK-${i+100}</p>
@@ -186,24 +230,24 @@ data.forEach((item,i)=>{
    <div class="box">${item.imp}</div>
   `;
 
-  document.getElementById("modal").style.display="block";
+  document.getElementById("modal").style.display = "block";
  };
 
  grid.appendChild(card);
 });
 
-// MODAL
+// CLOSE MODAL
 function closeModal(){
- document.getElementById("modal").style.display="none";
+ document.getElementById("modal").style.display = "none";
 }
 
 window.onclick = function(e){
  if(e.target == document.getElementById("modal")) closeModal();
 }
 
-// COPY
+// COPY REPORT
 function copyReport(){
- let text = document.getElementById("report").innerText;
+ const text = document.getElementById("report").innerText;
  navigator.clipboard.writeText(text).then(()=>{
   alert("Report Copied!");
  });
