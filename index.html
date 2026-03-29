@@ -3,134 +3,95 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DRAK24EVIL | Professional Security Audit</title>
+<title>DRAK24EVIL ULTRA v4.0</title>
 
 <style>
 :root {
-    --accent: #3b82f6;
-    --bg: #0f172a;
-    --card: #1e293b;
-    --text: #f8fafc;
-    --crit: #ef4444;
+    --accent:#3b82f6;
+    --bg:#0f172a;
+    --card:#1e293b;
+    --text:#f8fafc;
+    --crit:#ef4444;
 }
 
-body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Segoe UI', sans-serif;
-    margin: 0;
-}
+body { margin:0; font-family:Segoe UI; background:var(--bg); color:var(--text); }
 
 header {
-    background: #1e293b;
-    padding: 20px;
-    border-bottom: 1px solid #334155;
-    display: flex;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
+    background:#1e293b;
+    padding:15px 20px;
+    display:flex;
+    justify-content:space-between;
+    border-bottom:1px solid #334155;
 }
 
-.logo {
-    font-weight: 800;
-    color: var(--accent);
-}
+.logo { color:var(--accent); font-weight:bold; }
 
-.container {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
-}
+.container { max-width:1200px; margin:30px auto; padding:0 20px; }
 
 .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:15px;
 }
 
 .card {
-    background: var(--card);
-    border: 1px solid #334155;
-    border-radius: 12px;
-    padding: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-    position: relative;
+    background:var(--card);
+    padding:15px;
+    border-radius:10px;
+    cursor:pointer;
+    border:1px solid #334155;
+    transition:0.3s;
+    position:relative;
 }
 
-.card:hover {
-    border-color: var(--accent);
-    transform: translateY(-5px);
-}
+.card:hover { transform:translateY(-5px); border-color:var(--accent); }
 
 .badge {
-    font-size: 10px;
-    background: rgba(239,68,68,0.2);
-    color: var(--crit);
-    padding: 4px 8px;
-    border-radius: 4px;
-    position: absolute;
-    right: 15px;
-    top: 15px;
+    position:absolute;
+    right:10px;
+    top:10px;
+    font-size:10px;
+    background:rgba(239,68,68,0.2);
+    color:var(--crit);
+    padding:3px 6px;
+    border-radius:4px;
 }
 
 .modal {
-    display: none;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.9);
+    display:none;
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.9);
 }
 
 .modal-content {
-    background: #0f172a;
-    margin: 5% auto;
-    padding: 25px;
-    width: 90%;
-    max-width: 700px;
-    border-radius: 15px;
-    border: 1px solid var(--accent);
+    background:#0f172a;
+    margin:5% auto;
+    padding:20px;
+    width:90%;
+    max-width:700px;
+    border-radius:12px;
+    border:1px solid var(--accent);
 }
 
-.close {
-    float: right;
-    font-size: 25px;
-    cursor: pointer;
-}
+.close { float:right; cursor:pointer; font-size:22px; }
 
-.label {
-    color: var(--accent);
-    margin-top: 15px;
-    font-size: 12px;
-    font-weight: bold;
-}
+.label { color:var(--accent); margin-top:10px; font-size:12px; }
 
-.box {
-    background: #1e293b;
-    padding: 10px;
-    border-radius: 6px;
-    margin-top: 5px;
-}
+.box { background:#1e293b; padding:10px; border-radius:6px; margin-top:5px; }
 
-.code {
-    background: black;
-    color: #38bdf8;
-    padding: 10px;
-    border-radius: 6px;
-    margin-top: 5px;
-    font-family: monospace;
-}
+.code { background:black; color:#38bdf8; padding:10px; border-radius:6px; margin-top:5px; }
 
 .copy-btn {
-    margin-top: 20px;
-    width: 100%;
-    padding: 12px;
-    background: var(--accent);
-    border: none;
-    border-radius: 10px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
+    width:100%;
+    padding:10px;
+    margin-top:15px;
+    background:var(--accent);
+    border:none;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
 }
 </style>
 </head>
@@ -155,17 +116,36 @@ header {
 </div>
 
 <script>
+
 const data = [
-{p:"21",n:"vsftpd Backdoor",s:"Critical",t:"Metasploit",sum:"RCE via backdoor",steps:"Login with user:)",e:"exploit/unix/ftp/vsftpd",imp:"Root Access"},
+{p:"21",n:"vsftpd Backdoor",s:"Critical",t:"Metasploit",sum:"Backdoor RCE",steps:"Login with user:)",e:"exploit/unix/ftp/vsftpd",imp:"Root Access"},
 {p:"22",n:"SSH Brute Force",s:"High",t:"Hydra",sum:"Weak passwords",steps:"Run Hydra",e:"hydra ssh",imp:"System Access"},
-{p:"80",n:"PHP RCE",s:"Critical",t:"Metasploit",sum:"Code execution",steps:"Exploit CGI",e:"php exploit",imp:"Server Control"},
-{p:"139",n:"Samba Exploit",s:"Critical",t:"Metasploit",sum:"Usermap RCE",steps:"Run exploit",e:"samba exploit",imp:"Root Access"},
-{p:"445",n:"SMB Null",s:"High",t:"Enum4linux",sum:"Anonymous access",steps:"Scan SMB",e:"enum4linux",imp:"Data Leak"},
-{p:"3306",n:"MySQL No Pass",s:"High",t:"MySQL",sum:"No password",steps:"Login root",e:"mysql -u root",imp:"DB Leak"},
-{p:"WEB",n:"SQL Injection",s:"Critical",t:"Sqlmap",sum:"Database dump",steps:"Run sqlmap",e:"sqlmap --dbs",imp:"Full DB"},
-{p:"WEB",n:"XSS",s:"High",t:"Burp",sum:"JS injection",steps:"Inject script",e:"<script>alert(1)</script>",imp:"Cookie Theft"},
+{p:"23",n:"Telnet Default",s:"High",t:"Telnet",sum:"Default creds",steps:"Login msfadmin",e:"telnet",imp:"Access"},
+{p:"25",n:"SMTP Enum",s:"Medium",t:"smtp-user-enum",sum:"User leak",steps:"Run VRFY",e:"smtp-user-enum",imp:"Info Leak"},
+{p:"53",n:"DNS AXFR",s:"Medium",t:"dig",sum:"Zone transfer",steps:"dig axfr",e:"dig axfr",imp:"Network Map"},
+{p:"80",n:"PHP RCE",s:"Critical",t:"Metasploit",sum:"Code exec",steps:"Exploit CGI",e:"php exploit",imp:"Server Control"},
+{p:"111",n:"RPC Info Leak",s:"Low",t:"rpcinfo",sum:"Service enum",steps:"rpcinfo -p",e:"rpcinfo",imp:"Recon"},
+{p:"139",n:"Samba RCE",s:"Critical",t:"Metasploit",sum:"Usermap exploit",steps:"Run exploit",e:"samba exploit",imp:"Root"},
+{p:"445",n:"SMB Null",s:"High",t:"enum4linux",sum:"Anonymous access",steps:"Scan SMB",e:"enum4linux",imp:"Data Leak"},
+{p:"512",n:"Rexec Trust",s:"High",t:"rlogin",sum:"No auth",steps:"Login root",e:"rlogin",imp:"Full Access"},
+{p:"513",n:"Rlogin",s:"High",t:"rlogin",sum:"Trust exploit",steps:"Connect",e:"rlogin",imp:"Shell"},
+{p:"514",n:"Rsh Exec",s:"High",t:"rsh",sum:"Command exec",steps:"Run command",e:"rsh id",imp:"Exec"},
+{p:"1099",n:"Java RMI",s:"Critical",t:"Metasploit",sum:"RCE",steps:"Exploit registry",e:"rmi exploit",imp:"App Control"},
+{p:"1524",n:"Bind Shell",s:"Critical",t:"nc",sum:"Open shell",steps:"nc connect",e:"nc",imp:"Root"},
+{p:"2049",n:"NFS Leak",s:"High",t:"showmount",sum:"File leak",steps:"Mount share",e:"mount nfs",imp:"Data Leak"},
+{p:"2121",n:"ProFTPD Backdoor",s:"Critical",t:"Metasploit",sum:"Backdoor",steps:"Run exploit",e:"proftpd exploit",imp:"Root"},
+{p:"3306",n:"MySQL No Pass",s:"High",t:"mysql",sum:"No password",steps:"Login root",e:"mysql -u root",imp:"DB Leak"},
+{p:"3632",n:"Distccd",s:"Critical",t:"Metasploit",sum:"RCE",steps:"Run exploit",e:"distcc",imp:"Exec"},
+{p:"5432",n:"Postgres UDF",s:"Critical",t:"Metasploit",sum:"SQL exec",steps:"Exploit UDF",e:"postgres exploit",imp:"OS Access"},
+{p:"5900",n:"VNC No Auth",s:"High",t:"vncviewer",sum:"No password",steps:"Connect",e:"vncviewer",imp:"Desktop"},
+{p:"6667",n:"UnrealIRCd",s:"Critical",t:"Metasploit",sum:"Backdoor",steps:"Exploit IRC",e:"irc exploit",imp:"Root"},
+{p:"8080",n:"TikiWiki",s:"High",t:"Metasploit",sum:"RCE",steps:"Exploit",e:"tiki exploit",imp:"Web Control"},
+{p:"8180",n:"Tomcat Deploy",s:"Critical",t:"Metasploit",sum:"WAR upload",steps:"Deploy shell",e:"tomcat exploit",imp:"Shell"},
+{p:"WEB",n:"SQL Injection",s:"Critical",t:"sqlmap",sum:"DB dump",steps:"Run sqlmap",e:"sqlmap",imp:"Full DB"},
+{p:"WEB",n:"XSS",s:"High",t:"Burp",sum:"JS injection",steps:"Inject script",e:"<script>alert(1)</script>",imp:"Account Hijack"},
 {p:"WEB",n:"LFI",s:"High",t:"Browser",sum:"File read",steps:"Traversal",e:"../../etc/passwd",imp:"Info Leak"},
-{p:"WEB",n:"Command Injection",s:"Critical",t:"Burp",sum:"OS exec",steps:"Use ;",e:"; id",imp:"System Control"}
+{p:"WEB",n:"Command Injection",s:"Critical",t:"Burp",sum:"OS exec",steps:"Use ;",e:"; id",imp:"System Control"},
+{p:"WEB",n:"WebDAV Upload",s:"High",t:"Cadaver",sum:"Upload shell",steps:"Upload file",e:"cadaver",imp:"Webshell"}
 ];
 
 const grid = document.getElementById("grid");
@@ -182,6 +162,8 @@ data.forEach((item,i)=>{
     card.onclick=()=>{
         document.getElementById("report").innerHTML = `
             <h2>${item.n}</h2>
+            <p>ID: DRAK-${i+100}</p>
+
             <div class="label">Summary</div>
             <div class="box">${item.sum}</div>
 
@@ -217,6 +199,7 @@ function copyReport(){
         alert("Report Copied!");
     });
 }
+
 </script>
 
 </body>
