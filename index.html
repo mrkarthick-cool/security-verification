@@ -1,110 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DRAK24EVIL | Professional Audit</title>
-    <style>
-        :root { --accent: #3b82f6; --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --crit: #ef4444; }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 0; }
-        
-        /* Header */
-        header { background: #1e293b; padding: 20px; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-weight: 800; color: var(--accent); font-size: 1.2rem; }
-        
-        /* Grid */
-        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        
-        /* Card */
-        .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; cursor: pointer; transition: 0.3s; }
-        .card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .badge { font-size: 0.7rem; background: rgba(239, 68, 68, 0.2); color: var(--crit); padding: 4px 8px; border-radius: 4px; font-weight: bold; float: right; }
-        
-        /* Modal */
-        .modal { display: none; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); overflow-y: auto; }
-        .modal-content { background: #0f172a; margin: 5% auto; padding: 30px; width: 90%; max-width: 700px; border-radius: 20px; border: 1px solid var(--accent); }
-        .close { float: right; font-size: 30px; cursor: pointer; color: #64748b; }
-        
-        /* Report Style */
-        .label { color: var(--accent); font-weight: bold; font-size: 0.8rem; text-transform: uppercase; display: block; margin-top: 20px; }
-        .box { background: #1e293b; padding: 15px; border-radius: 8px; margin-top: 5px; border: 1px solid #334155; font-size: 0.9rem; color: #cbd5e1; line-height: 1.6; }
-        .code { background: #000; color: #38bdf8; padding: 15px; border-radius: 8px; font-family: monospace; margin-top: 10px; border-left: 4px solid var(--accent); word-break: break-all; }
-        .copy-btn { background: var(--accent); color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 25px; }
-    </style>
+<meta charset="UTF-8">
+<title>DRAK24EVIL | Bug Hunting Panel</title>
+
+<style>
+body{
+    background:#0d1117;
+    color:#c9d1d9;
+    font-family:Arial;
+    margin:0;
+}
+
+header{
+    background:#161b22;
+    padding:15px;
+    text-align:center;
+    border-bottom:2px solid #00ff99;
+}
+
+h1{margin:0;color:#00ff99;}
+
+.container{
+    padding:20px;
+    max-width:1100px;
+    margin:auto;
+}
+
+.card{
+    background:#161b22;
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:8px;
+    border-left:5px solid #00ff99;
+}
+
+.title{
+    font-size:18px;
+    font-weight:bold;
+    color:#58a6ff;
+}
+
+.section{
+    margin-top:10px;
+}
+
+.label{
+    color:#00ff99;
+    font-size:12px;
+}
+
+.code{
+    background:#000;
+    padding:10px;
+    border-radius:5px;
+    margin-top:5px;
+    font-family:monospace;
+    color:#00ff99;
+}
+</style>
 </head>
+
 <body>
 
 <header>
-    <div class="logo">DRAK24EVIL ULTRA</div>
-    <a href="https://t.me/Drak24Evil" style="color:white; text-decoration:none; font-size: 0.8rem;">TELEGRAM SUPPORT</a>
+<h1>DRAK24EVIL BUG HUNTING PANEL</h1>
+<p>28 Vulnerabilities Loaded</p>
 </header>
 
-<div class="container">
-    <div class="grid" id="mainGrid"></div>
-</div>
-
-<div id="reportModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeM()">&times;</span>
-        <div id="reportArea"></div>
-        <button class="copy-btn" onclick="copyReport()">COPY FULL REPORT</button>
-    </div>
-</div>
+<div class="container" id="app"></div>
 
 <script>
-// Full database including 28 vulnerability templates
-const data = [
-    { p:"21", n:"vsftpd 2.3.4 Backdoor", s:"Critical", t:"Nmap, Metasploit", sum:"Remote code execution via malicious backdoor in the source code.", steps:"1. Connect to port 21\n2. User 'anonymous:)'\n3. Connect to port 6200", e:"use exploit/unix/ftp/vsftpd_234_backdoor", imp:"Full Root Access" },
-    { p:"22", n:"SSH Brute Force", s:"High", t:"Hydra", sum:"Credential stuffing against SSH service.", steps:"1. Use rockyou.txt\n2. Run hydra against target\n3. Login via SSH", e:"hydra -l root -P pass.txt [IP] ssh", imp:"Remote System Access" },
-    { p:"139", n:"Samba Usermap Script", s:"Critical", t:"Metasploit", sum:"Remote command execution via username mapping.", steps:"1. Configure RHOSTS\n2. Run exploit\n3. Execute commands", e:"exploit/multi/samba/usermap_script", imp:"Full root compromise" },
-    { p:"1524", n:"Ingreslock Shell", s:"Critical", t:"Netcat", sum:"Unauthenticated bind shell listening on port 1524.", steps:"1. Connect via NC\n2. Run 'id' command", e:"nc [TARGET] 1524", imp:"Immediate shell access" },
-    { p:"3306", n:"MySQL No Password", s:"High", t:"MySQL-Client", sum:"Root database user has no password.", steps:"1. Connect to MySQL\n2. Extract user data", e:"mysql -h [IP] -u root", imp:"Database Leak" },
-    { p:"WEB", n:"SQL Injection", s:"Critical", t:"Sqlmap", sum:"Data theft via vulnerable URL parameters.", steps:"1. Locate vuln URL\n2. Run sqlmap --dbs", e:"sqlmap -u [URL] --batch --dbs", imp:"Full DB Takeover" },
-    { p:"WEB", n:"XSS Reflected", s:"High", t:"Burp Suite", sum:"Malicious script execution in user browser.", steps:"1. Inject <script>\n2. Capture cookies", e:"<script>alert(document.cookie)</script>", imp:"Account Takeover" },
-    { p:"WEB", n:"LFI Traversal", s:"High", t:"Web Browser", sum:"Accessing internal system files via directory traversal.", steps:"1. Use ../../../\n2. Read /etc/passwd", e: "/etc/passwd", imp:"System Info Leak" },
-    { p:"WEB", n:"Command Injection", s:"Critical", t:"Netcat", sum:"OS Command execution via web form.", steps:"1. Use ; operator\n2. Run 'cat /etc/passwd'", e: "; id; whoami", imp:"OS Takeover" }
-    // Add the rest of your 28 items here in the same format
+
+const vulns = [
+
+{t:"vsftpd Backdoor",d:"FTP backdoor allows shell access",
+s:"1. Connect FTP\n2. Use user:)\n3. Shell opens",
+i:"Full Root Access",e:"exploit/unix/ftp/vsftpd"},
+
+{t:"SSH Brute Force",d:"Weak password attack",
+s:"1. Run Hydra\n2. Crack password",
+i:"Login Access",e:"hydra ssh"},
+
+{t:"Telnet Default",d:"Default credentials used",
+s:"1. telnet target\n2. login default",
+i:"User Access",e:"telnet"},
+
+{t:"SMTP Enumeration",d:"Usernames leaked",
+s:"1. Run enum\n2. find users",
+i:"Info Leak",e:"smtp-user-enum"},
+
+{t:"DNS Zone Transfer",d:"Full DNS leak",
+s:"1. dig axfr",
+i:"Network Map",e:"dig axfr"},
+
+{t:"PHP RCE",d:"Execute commands via PHP",
+s:"1. exploit CGI",
+i:"Server Control",e:"php exploit"},
+
+{t:"RPC Leak",d:"Service discovery",
+s:"1. rpcinfo",
+i:"Recon",e:"rpcinfo"},
+
+{t:"Samba RCE",d:"Remote code execution",
+s:"1. exploit samba",
+i:"Root",e:"samba exploit"},
+
+{t:"SMB Null Session",d:"Anonymous login",
+s:"1. enum4linux",
+i:"Data Leak",e:"enum4linux"},
+
+{t:"Rexec Trust",d:"No auth login",
+s:"1. rlogin root",
+i:"Root Access",e:"rlogin"},
+
+{t:"Rlogin Access",d:"Trust exploit",
+s:"1. rlogin",
+i:"Shell",e:"rlogin"},
+
+{t:"Rsh Exec",d:"Command execution",
+s:"1. rsh command",
+i:"Exec",e:"rsh"},
+
+{t:"Java RMI RCE",d:"Remote execution",
+s:"1. exploit RMI",
+i:"App Control",e:"rmi exploit"},
+
+{t:"Bind Shell",d:"Open shell",
+s:"1. nc connect",
+i:"Root",e:"nc target 1524"},
+
+{t:"NFS Leak",d:"File access",
+s:"1. mount share",
+i:"Data Leak",e:"mount"},
+
+{t:"ProFTPD Backdoor",d:"FTP exploit",
+s:"1. exploit ftp",
+i:"Root",e:"proftpd exploit"},
+
+{t:"MySQL No Password",d:"No auth DB",
+s:"1. login mysql",
+i:"DB Access",e:"mysql"},
+
+{t:"Distccd RCE",d:"Exec via distcc",
+s:"1. exploit distcc",
+i:"Exec",e:"distcc"},
+
+{t:"Postgres UDF",d:"SQL execution",
+s:"1. exploit postgres",
+i:"OS Access",e:"postgres exploit"},
+
+{t:"VNC No Auth",d:"Remote desktop",
+s:"1. connect vnc",
+i:"Desktop Access",e:"vncviewer"},
+
+{t:"UnrealIRCd Backdoor",d:"IRC exploit",
+s:"1. exploit irc",
+i:"Root",e:"irc exploit"},
+
+{t:"TikiWiki RCE",d:"Web exec",
+s:"1. exploit tiki",
+i:"Web Control",e:"tiki exploit"},
+
+{t:"Tomcat Deploy",d:"Upload WAR",
+s:"1. deploy shell",
+i:"Shell Access",e:"tomcat exploit"},
+
+{t:"SQL Injection",d:"Database attack",
+s:"1. run sqlmap",
+i:"Full DB",e:"sqlmap"},
+
+{t:"XSS",d:"Script injection",
+s:"1. inject script",
+i:"Cookie Theft",e:"<script>alert(1)</script>"},
+
+{t:"LFI",d:"File read",
+s:"1. ../../etc/passwd",
+i:"Info Leak",e:"../../etc/passwd"},
+
+{t:"Command Injection",d:"Execute OS commands",
+s:"1. use ;",
+i:"System Control",e:"; id"},
+
+{t:"WebDAV Upload",d:"Upload shell",
+s:"1. upload file",
+i:"Webshell",e:"cadaver"}
+
 ];
 
-const grid = document.getElementById('mainGrid');
+const app = document.getElementById("app");
 
-// Using a standard loop to prevent JavaScript crashes
-for (let i = 0; i < data.length; i++) {
-    const item = data[i];
-    const d = document.createElement('div');
-    d.className = 'card';
-    d.innerHTML = '<span class="badge">' + item.s + '</span><small style="color:#3b82f6">PORT ' + item.p + '</small><h3>' + item.n + '</h3>';
-    
-    d.onclick = function() {
-        document.getElementById('reportArea').innerHTML = 
-            '<h2 style="color:#3b82f6">' + item.n + '</h2>' +
-            '<span class="label">Summary:</span><div class="box">' + item.sum + '</div>' +
-            '<span class="label">Tools Required:</span><div class="box">' + item.t + '</div>' +
-            '<span class="label">Steps To Reproduce:</span><div class="box">' + item.steps + '</div>' +
-            '<span class="label">Exploit Command:</span><div class="code">' + item.e + '</div>' +
-            '<span class="label">Impact:</span><div class="box" style="border-left:4px solid red">' + item.imp + '</div>';
-        
-        document.getElementById('reportModal').style.display = 'block';
-    };
-    grid.appendChild(d);
-}
+vulns.forEach(v=>{
+    app.innerHTML += `
+    <div class="card">
+        <div class="title">${v.t}</div>
 
-function copyReport() {
-    const text = document.getElementById('reportArea').innerText;
-    const temp = document.createElement('textarea');
-    temp.value = text;
-    document.body.appendChild(temp);
-    temp.select();
-    document.execCommand('copy');
-    document.body.removeChild(temp);
-    alert('HackerOne Report Copied!');
-}
+        <div class="section">
+            <div class="label">Description</div>
+            ${v.d}
+        </div>
 
-function closeM() { document.getElementById('reportModal').style.display = 'none'; }
-window.onclick = function(event) {
-    if (event.target == document.getElementById('reportModal')) { closeM(); }
-}
+        <div class="section">
+            <div class="label">Steps</div>
+            ${v.s}
+        </div>
+
+        <div class="section">
+            <div class="label">Impact</div>
+            ${v.i}
+        </div>
+
+        <div class="section">
+            <div class="label">Exploit PoC</div>
+            <div class="code">${v.e}</div>
+        </div>
+    </div>
+    `;
+});
+
 </script>
+
 </body>
 </html>
