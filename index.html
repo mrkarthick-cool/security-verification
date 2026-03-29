@@ -6,92 +6,116 @@
 <title>DRAK24EVIL ULTRA v4.0</title>
 
 <style>
-:root {
-    --accent:#3b82f6;
-    --bg:#0f172a;
-    --card:#1e293b;
-    --text:#f8fafc;
-    --crit:#ef4444;
+:root{
+ --accent:#3b82f6;
+ --bg:#0f172a;
+ --card:#1e293b;
+ --text:#f8fafc;
+ --crit:#ef4444;
 }
 
-body { margin:0; font-family:Segoe UI; background:var(--bg); color:var(--text); }
-
-header {
-    background:#1e293b;
-    padding:15px 20px;
-    display:flex;
-    justify-content:space-between;
-    border-bottom:1px solid #334155;
+body{
+ margin:0;
+ font-family:Segoe UI;
+ background:var(--bg);
+ color:var(--text);
 }
 
-.logo { color:var(--accent); font-weight:bold; }
-
-.container { max-width:1200px; margin:30px auto; padding:0 20px; }
-
-.grid {
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:15px;
+header{
+ display:flex;
+ justify-content:space-between;
+ padding:15px;
+ background:#1e293b;
+ border-bottom:1px solid #334155;
 }
 
-.card {
-    background:var(--card);
-    padding:15px;
-    border-radius:10px;
-    cursor:pointer;
-    border:1px solid #334155;
-    transition:0.3s;
-    position:relative;
+.logo{color:var(--accent);font-weight:bold;}
+
+.container{padding:20px;max-width:1200px;margin:auto;}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+ gap:15px;
 }
 
-.card:hover { transform:translateY(-5px); border-color:var(--accent); }
-
-.badge {
-    position:absolute;
-    right:10px;
-    top:10px;
-    font-size:10px;
-    background:rgba(239,68,68,0.2);
-    color:var(--crit);
-    padding:3px 6px;
-    border-radius:4px;
+.card{
+ background:var(--card);
+ padding:15px;
+ border-radius:10px;
+ cursor:pointer;
+ border:1px solid #334155;
+ position:relative;
+ transition:0.3s;
 }
 
-.modal {
-    display:none;
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.9);
+.card:hover{
+ transform:translateY(-5px);
+ border-color:var(--accent);
 }
 
-.modal-content {
-    background:#0f172a;
-    margin:5% auto;
-    padding:20px;
-    width:90%;
-    max-width:700px;
-    border-radius:12px;
-    border:1px solid var(--accent);
+.badge{
+ position:absolute;
+ right:10px;
+ top:10px;
+ background:rgba(239,68,68,0.2);
+ color:var(--crit);
+ font-size:10px;
+ padding:3px 6px;
+ border-radius:4px;
 }
 
-.close { float:right; cursor:pointer; font-size:22px; }
+.modal{
+ display:none;
+ position:fixed;
+ width:100%;
+ height:100%;
+ background:rgba(0,0,0,0.9);
+}
 
-.label { color:var(--accent); margin-top:10px; font-size:12px; }
+.modal-content{
+ background:#0f172a;
+ margin:5% auto;
+ padding:20px;
+ width:90%;
+ max-width:700px;
+ border-radius:10px;
+ border:1px solid var(--accent);
+}
 
-.box { background:#1e293b; padding:10px; border-radius:6px; margin-top:5px; }
+.close{
+ float:right;
+ cursor:pointer;
+ font-size:22px;
+}
 
-.code { background:black; color:#38bdf8; padding:10px; border-radius:6px; margin-top:5px; }
+.label{color:var(--accent);margin-top:10px;}
 
-.copy-btn {
-    width:100%;
-    padding:10px;
-    margin-top:15px;
-    background:var(--accent);
-    border:none;
-    color:white;
-    border-radius:8px;
-    cursor:pointer;
+.box{
+ background:#1e293b;
+ padding:10px;
+ border-radius:6px;
+ margin-top:5px;
+}
+
+.code{
+ background:black;
+ color:#38bdf8;
+ padding:10px;
+ border-radius:6px;
+ margin-top:5px;
+ font-family:monospace;
+}
+
+.copy-btn{
+ width:100%;
+ padding:10px;
+ margin-top:15px;
+ background:var(--accent);
+ border:none;
+ color:white;
+ border-radius:8px;
+ cursor:pointer;
 }
 </style>
 </head>
@@ -99,105 +123,85 @@ header {
 <body>
 
 <header>
-    <div class="logo">DRAK24EVIL ULTRA v4.0</div>
-    <div>[ 28 TARGETS LOADED ]</div>
+ <div class="logo">DRAK24EVIL ULTRA v4.0</div>
+ <div>[ TARGETS LOADED ]</div>
 </header>
 
 <div class="container">
-    <div class="grid" id="grid"></div>
+ <div class="grid" id="grid"></div>
 </div>
 
 <div id="modal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <div id="report"></div>
-        <button class="copy-btn" onclick="copyReport()">COPY REPORT</button>
-    </div>
+ <div class="modal-content">
+  <span class="close" onclick="closeModal()">&times;</span>
+  <div id="report"></div>
+  <button class="copy-btn" onclick="copyReport()">COPY REPORT</button>
+ </div>
 </div>
 
 <script>
 
+// CLEAN DATA (NO BROKEN JSON)
 const data = [
-{p:"21",n:"vsftpd Backdoor",s:"Critical",t:"Metasploit",sum:"Backdoor RCE",steps:"Login with user:)",e:"exploit/unix/ftp/vsftpd",imp:"Root Access"},
-{p:"22",n:"SSH Brute Force",s:"High",t:"Hydra",sum:"Weak passwords",steps:"Run Hydra",e:"hydra ssh",imp:"System Access"},
-{p:"23",n:"Telnet Default",s:"High",t:"Telnet",sum:"Default creds",steps:"Login msfadmin",e:"telnet",imp:"Access"},
-{p:"25",n:"SMTP Enum",s:"Medium",t:"smtp-user-enum",sum:"User leak",steps:"Run VRFY",e:"smtp-user-enum",imp:"Info Leak"},
-{p:"53",n:"DNS AXFR",s:"Medium",t:"dig",sum:"Zone transfer",steps:"dig axfr",e:"dig axfr",imp:"Network Map"},
-{p:"80",n:"PHP RCE",s:"Critical",t:"Metasploit",sum:"Code exec",steps:"Exploit CGI",e:"php exploit",imp:"Server Control"},
-{p:"111",n:"RPC Info Leak",s:"Low",t:"rpcinfo",sum:"Service enum",steps:"rpcinfo -p",e:"rpcinfo",imp:"Recon"},
-{p:"139",n:"Samba RCE",s:"Critical",t:"Metasploit",sum:"Usermap exploit",steps:"Run exploit",e:"samba exploit",imp:"Root"},
-{p:"445",n:"SMB Null",s:"High",t:"enum4linux",sum:"Anonymous access",steps:"Scan SMB",e:"enum4linux",imp:"Data Leak"},
-{p:"512",n:"Rexec Trust",s:"High",t:"rlogin",sum:"No auth",steps:"Login root",e:"rlogin",imp:"Full Access"},
-{p:"513",n:"Rlogin",s:"High",t:"rlogin",sum:"Trust exploit",steps:"Connect",e:"rlogin",imp:"Shell"},
-{p:"514",n:"Rsh Exec",s:"High",t:"rsh",sum:"Command exec",steps:"Run command",e:"rsh id",imp:"Exec"},
-{p:"1099",n:"Java RMI",s:"Critical",t:"Metasploit",sum:"RCE",steps:"Exploit registry",e:"rmi exploit",imp:"App Control"},
-{p:"1524",n:"Bind Shell",s:"Critical",t:"nc",sum:"Open shell",steps:"nc connect",e:"nc",imp:"Root"},
-{p:"2049",n:"NFS Leak",s:"High",t:"showmount",sum:"File leak",steps:"Mount share",e:"mount nfs",imp:"Data Leak"},
-{p:"2121",n:"ProFTPD Backdoor",s:"Critical",t:"Metasploit",sum:"Backdoor",steps:"Run exploit",e:"proftpd exploit",imp:"Root"},
-{p:"3306",n:"MySQL No Pass",s:"High",t:"mysql",sum:"No password",steps:"Login root",e:"mysql -u root",imp:"DB Leak"},
-{p:"3632",n:"Distccd",s:"Critical",t:"Metasploit",sum:"RCE",steps:"Run exploit",e:"distcc",imp:"Exec"},
-{p:"5432",n:"Postgres UDF",s:"Critical",t:"Metasploit",sum:"SQL exec",steps:"Exploit UDF",e:"postgres exploit",imp:"OS Access"},
-{p:"5900",n:"VNC No Auth",s:"High",t:"vncviewer",sum:"No password",steps:"Connect",e:"vncviewer",imp:"Desktop"},
-{p:"6667",n:"UnrealIRCd",s:"Critical",t:"Metasploit",sum:"Backdoor",steps:"Exploit IRC",e:"irc exploit",imp:"Root"},
-{p:"8080",n:"TikiWiki",s:"High",t:"Metasploit",sum:"RCE",steps:"Exploit",e:"tiki exploit",imp:"Web Control"},
-{p:"8180",n:"Tomcat Deploy",s:"Critical",t:"Metasploit",sum:"WAR upload",steps:"Deploy shell",e:"tomcat exploit",imp:"Shell"},
-{p:"WEB",n:"SQL Injection",s:"Critical",t:"sqlmap",sum:"DB dump",steps:"Run sqlmap",e:"sqlmap",imp:"Full DB"},
-{p:"WEB",n:"XSS",s:"High",t:"Burp",sum:"JS injection",steps:"Inject script",e:"<script>alert(1)</script>",imp:"Account Hijack"},
-{p:"WEB",n:"LFI",s:"High",t:"Browser",sum:"File read",steps:"Traversal",e:"../../etc/passwd",imp:"Info Leak"},
-{p:"WEB",n:"Command Injection",s:"Critical",t:"Burp",sum:"OS exec",steps:"Use ;",e:"; id",imp:"System Control"},
-{p:"WEB",n:"WebDAV Upload",s:"High",t:"Cadaver",sum:"Upload shell",steps:"Upload file",e:"cadaver",imp:"Webshell"}
+{p:"WEB",n:"XSS",s:"High",t:"Burp",sum:"JavaScript injection",steps:"Inject payload",e:"<script>alert(1)</script>",imp:"Cookie Theft"},
+{p:"WEB",n:"LFI",s:"High",t:"Browser",sum:"File read via traversal",steps:"Use ../",e:"../../etc/passwd",imp:"Info Leak"},
+{p:"WEB",n:"Command Injection",s:"Critical",t:"Burp",sum:"OS execution",steps:"Use ;",e:"; id",imp:"System Control"}
 ];
 
+// RENDER CARDS
 const grid = document.getElementById("grid");
 
 data.forEach((item,i)=>{
-    let card = document.createElement("div");
-    card.className="card";
-    card.innerHTML = `
-        <span class="badge">${item.s}</span>
-        <small>PORT ${item.p}</small>
-        <h3>${item.n}</h3>
-    `;
+ let card = document.createElement("div");
+ card.className="card";
 
-    card.onclick=()=>{
-        document.getElementById("report").innerHTML = `
-            <h2>${item.n}</h2>
-            <p>ID: DRAK-${i+100}</p>
+ card.innerHTML = `
+   <span class="badge">${item.s}</span>
+   <small>PORT ${item.p}</small>
+   <h3>${item.n}</h3>
+ `;
 
-            <div class="label">Summary</div>
-            <div class="box">${item.sum}</div>
+ card.onclick=()=>{
+  document.getElementById("report").innerHTML = `
+   <h2>${item.n}</h2>
 
-            <div class="label">Tools</div>
-            <div class="box">${item.t}</div>
+   <div class="label">Summary</div>
+   <div class="box">${item.sum}</div>
 
-            <div class="label">Steps</div>
-            <div class="box">${item.steps}</div>
+   <div class="label">Tools</div>
+   <div class="box">${item.t}</div>
 
-            <div class="label">Exploit</div>
-            <div class="code">${item.e}</div>
+   <div class="label">Steps</div>
+   <div class="box">${item.steps}</div>
 
-            <div class="label">Impact</div>
-            <div class="box">${item.imp}</div>
-        `;
-        document.getElementById("modal").style.display="block";
-    };
+   <div class="label">Exploit</div>
+   <div class="code">${item.e}</div>
 
-    grid.appendChild(card);
+   <div class="label">Impact</div>
+   <div class="box">${item.imp}</div>
+  `;
+
+  document.getElementById("modal").style.display="block";
+ };
+
+ grid.appendChild(card);
 });
 
+// MODAL CLOSE
 function closeModal(){
-    document.getElementById("modal").style.display="none";
+ document.getElementById("modal").style.display="none";
 }
 
 window.onclick = function(e){
-    if(e.target == document.getElementById("modal")) closeModal();
+ if(e.target == document.getElementById("modal")) closeModal();
 }
 
+// COPY FUNCTION (MODERN)
 function copyReport(){
-    let text = document.getElementById("report").innerText;
-    navigator.clipboard.writeText(text).then(()=>{
-        alert("Report Copied!");
-    });
+ let text = document.getElementById("report").innerText;
+ navigator.clipboard.writeText(text).then(()=>{
+  alert("Report Copied!");
+ });
 }
 
 </script>
