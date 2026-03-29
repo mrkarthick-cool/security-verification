@@ -100,7 +100,6 @@ header{
 <script>
 
 const data = [
-
 {p:"21",n:"vsftpd Backdoor",s:"Critical",tool:"Metasploit",m:"Backdoor login",i:"Root Access",e:"exploit/unix/ftp/vsftpd"},
 {p:"22",n:"SSH Brute Force",s:"High",tool:"Hydra",m:"Password attack",i:"System Access",e:"hydra ssh"},
 {p:"23",n:"Telnet Default",s:"High",tool:"Telnet",m:"Default creds",i:"Access",e:"telnet"},
@@ -130,12 +129,11 @@ const data = [
 {p:"WEB",n:"LFI",s:"High",tool:"Browser",m:"File read",i:"Info Leak",e:"../../etc/passwd"},
 {p:"WEB",n:"Command Injection",s:"Critical",tool:"Burp",m:"OS exec",i:"System Control",e:"; id"},
 {p:"WEB",n:"WebDAV Upload",s:"High",tool:"Cadaver",m:"Upload shell",i:"Webshell",e:"cadaver"}
-
 ];
 
 const grid = document.getElementById("mainGrid");
 
-data.forEach((item,i)=>{
+data.forEach((item)=>{
  let card=document.createElement("div");
  card.className="card";
 
@@ -150,10 +148,19 @@ data.forEach((item,i)=>{
  card.onclick=()=>{
  document.getElementById("body").innerHTML=`
  <h2>${item.n}</h2>
- <span class="poc-label">Tool</span><div class="poc-content">${item.tool}</div>
- <span class="poc-label">Method</span><div class="poc-content">${item.m}</div>
- <span class="poc-label">Impact</span><div class="poc-content">${item.i}</div>
- <span class="poc-label">Exploit</span><div id="code" class="poc-content">${item.e}</div>
+
+ <div class="poc-label">Tool</div>
+ <div class="poc-content">${item.tool}</div>
+
+ <div class="poc-label">Method</div>
+ <div class="poc-content">${item.m}</div>
+
+ <div class="poc-label">Impact</div>
+ <div class="poc-content">${item.i}</div>
+
+ <div class="poc-label">Exploit</div>
+ <div id="code" class="poc-content">${item.e}</div>
+
  <button class="copy-btn" onclick="copyCode()">Copy</button>
  `;
  document.getElementById("modal").style.display="block";
